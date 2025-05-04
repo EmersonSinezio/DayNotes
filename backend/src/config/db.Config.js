@@ -40,5 +40,4 @@ const connectDB = async () => {
 
   return cached.conn;
 };
-
-export { mongoose, connectDB };
+module.exports = { mongoose, connectDB };
