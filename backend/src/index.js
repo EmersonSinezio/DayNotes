@@ -9,23 +9,38 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(async (req, res, next) => {
+// app.use(async (req, res, next) => {
+//   try {
+//     console.log("📡 Iniciando conexão...");
+//     await connectDB();
+//     next();
+//   } catch (err) {
+//     console.error("💥 Erro durante a conexão:");
+//     console.error(err);
+//     res.status(500).json({
+//       error: "Erro de conexão com o banco de dados",
+//       details:
+//         process.env.NODE_ENV === "development" && err instanceof Error
+//           ? err.message
+//           : undefined,
+//     });
+//   }
+// });
+
+const startServer = async () => {
   try {
-    console.log("📡 Iniciando conexão...");
     await connectDB();
-    next();
+    app.listen(3001, () => {
+      console.log(`🚀 Servidor iniciado na porta http://localhost:${3001}`);
+    });
   } catch (err) {
     console.error("💥 Erro durante a conexão:");
     console.error(err);
-    res.status(500).json({
-      error: "Erro de conexão com o banco de dados",
-      details:
-        process.env.NODE_ENV === "development" && err instanceof Error
-          ? err.message
-          : undefined,
-    });
   }
-});
+};
+
+startServer();
+
 // Rotas
 app.use(routes);
 

@@ -1,20 +1,33 @@
-    //  Todos os requires
-const express = require('express')
-const routes = express.Router()
-const AnnotationController = require('./controllers/AnnotationController')
-const ContentController = require('./controllers/ContentController')
-const PriorityController = require('./controllers/PriorityController')
+//  Todos os requires
+const express = require("express");
+const routes = express.Router();
+const AnnotationController = require("./controllers/AnnotationController");
+const ContentController = require("./controllers/ContentController");
+const PriorityController = require("./controllers/PriorityController");
+const UserController = require("./controllers/UserController");
+const verifyUser = require("./middlewares/authMiddleware");
 
 //Rota de anotações
-routes.get('/annotations', AnnotationController.read)
-routes.post('/annotations', AnnotationController.create)
-routes.delete('/annotations/:id', AnnotationController.delete)
+routes.get("/users/:userid/notes", verifyUser, AnnotationController.read);
+routes.post("/users/:userid/notes", verifyUser, AnnotationController.create);
+routes.delete(
+  "/users/:userid/notes/:id",
+  verifyUser,
+  AnnotationController.delete
+);
 
-    //  Rota de prioridade
-routes.get('/priorities', PriorityController.read)
-routes.post('/priorities/:id', PriorityController.update)
+routes.get("/users/:userid/priorities", verifyUser, PriorityController.read);
+routes.put(
+  "/users/:userid/priorities/:id",
+  verifyUser,
+  PriorityController.update
+);
 
-//  Rota content
-routes.post('/contents/:id', ContentController.update)
+routes.put("/users/:userid/contents/:id", verifyUser, ContentController.update);
+
+//  Rota user
+routes.post("/users", UserController.register);
+routes.post("/users/login", UserController.login);
+routes.get("/users/me", UserController.me);
 
 module.exports = routes;
