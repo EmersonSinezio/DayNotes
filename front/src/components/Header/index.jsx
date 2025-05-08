@@ -6,6 +6,7 @@ import { useState } from "react";
 const Header = ({ logout }) => {
   const [logged, setLogged] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [changeBtn, setChangeBtn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +22,15 @@ const Header = ({ logout }) => {
     navigate("/login");
   };
 
+  const changeButton = () => {
+    setChangeBtn(!changeBtn);
+    if (changeBtn) {
+      navigate("/login");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <div className="header">
       <Link to="/">
@@ -28,11 +38,25 @@ const Header = ({ logout }) => {
       </Link>
       <div className="profile" onClick={() => setShowMenu(!showMenu)}>
         {logged ? (
+          <p>{JSON.parse(localStorage.getItem("user")).username}</p>
+        ) : null}
+        {logged ? (
           <img src="/assets/icon.jpg" alt="" className="icon" />
+        ) : changeBtn ? (
+          <button className="profile_btn" onClick={() => changeButton()}>
+            Entrar
+          </button>
         ) : (
-          <Link to="/login">Login</Link>
+          <button className="profile_btn" onClick={() => changeButton()}>
+            Cadastrar
+          </button>
         )}
-        <div className={showMenu ? "menu-open" : "menu-close"}>
+
+        <div
+          className={
+            logged ? (showMenu ? "menu-open" : "menu-close") : "menu-close"
+          }
+        >
           <ul className="menu">
             <li>em breve</li>
             <li onClick={handleLogout}>Encerrar sessão</li>{" "}
