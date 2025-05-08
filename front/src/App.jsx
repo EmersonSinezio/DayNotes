@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import { Navigate } from "react-router-dom";
 import api from "./services/api";
 import { useState, useEffect } from "react";
+import Header from "./components/Header";
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,10 +37,16 @@ const App = () => {
     localStorage.removeItem("user");
     setUser(null);
   };
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  };
 
   if (loading) return <div>Carregando...</div>;
   return (
     <Router>
+      <Header logout={logout} />
       <Routes>
         <Route
           path="/login"

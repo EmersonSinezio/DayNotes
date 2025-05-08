@@ -98,8 +98,6 @@ function Homepage({ user, logout }) {
   return (
     <div id="app">
       <aside>
-        <h1>Bem-vindo, {user.username}</h1>
-        <button onClick={logout}>Sair</button>
         <strong>Caderno de notas</strong>
         <form action="" onSubmit={handleSubmit}>
           <div className="input-block">

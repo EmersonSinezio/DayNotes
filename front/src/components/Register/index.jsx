@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { FaRegUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/api";
-import "../styles/auth.css";
+import "./styles/register_styles.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,10 +19,15 @@ const Register = () => {
       username: e.target.username.value.trim(),
       password: e.target.password.value.trim(),
       confirmPassword: e.target.confirmPassword.value.trim(),
+      terms: e.target.terms.checked,
     };
 
     try {
       // Validações do cliente
+      if (!formData.terms) {
+        throw new Error("Você deve aceitar os termos e condições");
+      }
+
       if (formData.password !== formData.confirmPassword) {
         throw new Error("As senhas não coincidem");
       }
@@ -52,57 +56,105 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="login-header">
-          <FaRegUserCircle size={50} className="icon" />
-          <h1>Registro</h1>
+    <div className="sign_up-container">
+      <div className="sign_up-main-container">
+        <div className="sign_up-content-container">
+          <div className="sign_up-text-center">
+            <h1 className="sign_up-title">Criar Conta</h1>
+            <p className="sign_up-subtitle">
+              Já possui uma conta?
+              <Link className="sign_up-signin-link" to="/login">
+                Fazer login
+              </Link>
+            </p>
+          </div>
+
+          <div className="sign_up-form-section">
+            {error && <div className="sign_up-error-message">{error}</div>}
+            {successMessage && (
+              <div className="sign_up-success-message">{successMessage}</div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className="sign_up-form-grid">
+                <div className="sign_up-form-group">
+                  <label htmlFor="username" className="sign_up-input-label">
+                    Nome de usuário
+                  </label>
+                  <div className="sign_up-input-container">
+                    <input
+                      type="text"
+                      id="username"
+                      className="sign_up-input-field"
+                      required
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="sign_up-form-group">
+                  <label htmlFor="password" className="sign_up-input-label">
+                    Senha
+                  </label>
+                  <div className="sign_up-input-container">
+                    <input
+                      type="password"
+                      id="password"
+                      className="sign_up-input-field"
+                      required
+                      minLength="6"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="sign_up-form-group">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="sign_up-input-label"
+                  >
+                    Confirme a Senha
+                  </label>
+                  <div className="sign_up-input-container">
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      className="sign_up-input-field"
+                      required
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="sign_up-checkbox-container">
+                  <div className="sign_up-checkbox-wrapper">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      className="sign_up-checkbox-input"
+                      disabled={loading}
+                    />
+                  </div>
+                  <label htmlFor="terms" className="sign_up-checkbox-label">
+                    Eu aceito os{" "}
+                    <a className="sign_up-terms-link" href="#">
+                      Termos e Condições
+                    </a>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="sign_up-submit-button"
+                  disabled={loading}
+                >
+                  {loading ? "Registrando..." : "Registrar"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        {error && <div className="error-message">{error}</div>}
-        {successMessage && (
-          <div className="success-message">{successMessage}</div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="input-block">
-            <label htmlFor="username">Nome de usuário</label>
-            <input type="text" id="username" required disabled={loading} />
-          </div>
-
-          <div className="input-block">
-            <label htmlFor="password">Senha</label>
-            <input
-              type="password"
-              id="password"
-              required
-              minLength="6"
-              disabled={loading}
-            />
-          </div>
-
-          <div className="input-block">
-            <label htmlFor="confirmPassword">Confirme a senha</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={loading ? "loading" : ""}
-          >
-            {loading ? "Registrando..." : "Registrar"}
-          </button>
-        </form>
-
-        <p className="auth-link">
-          Já possui uma conta? <Link to="/login">Faça login</Link>
-        </p>
       </div>
     </div>
   );
