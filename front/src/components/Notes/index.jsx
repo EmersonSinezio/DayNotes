@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
-import "./NotesStyles/NotesStyles.css";
-import "./NotesStyles/NotesStyles-Priority.css";
+import "../../styles/notes/Notes.min.css";
 import api from "../../services/api";
 
-function Notes({ data, handleDelete, handleChangePriority}) {
+function Notes({ data, handleDelete, handleChangePriority }) {
   const [changedNotes, setChangedNotes] = useState("");
 
   async function handleSave(e, notes) {
@@ -14,15 +13,17 @@ function Notes({ data, handleDelete, handleChangePriority}) {
         notes: changedNotes,
       });
     }
-    e.style.cursor = 'default'
-    e.style.boxShadow = "none"
+    e.style.cursor = "default";
+    e.style.boxShadow = "none";
   }
 
-  function handleEdit(e,priority){
-    e.style.cursor = 'text';
-    e.style.borderRadius = '5px';
+  function handleEdit(e, priority) {
+    e.style.cursor = "text";
+    e.style.borderRadius = "5px";
 
-    priority ? e.style.boxShadow = '0 0 5px white' : e.style.boxShadow = '0 0 5 px gray'
+    priority
+      ? (e.style.boxShadow = "0 0 5px white")
+      : (e.style.boxShadow = "0 0 5 px gray");
   }
 
   return (
@@ -33,17 +34,20 @@ function Notes({ data, handleDelete, handleChangePriority}) {
         <div>
           <strong>{data.title}</strong>
           <div>
-            <BsFillTrashFill size={24} onClick={()=>handleDelete(data._id)}/>
+            <BsFillTrashFill size={24} onClick={() => handleDelete(data._id)} />
           </div>
         </div>
         <textarea
           defaultValue={data.notes}
-          onClick={e=>handleEdit(e.target, data.priority)}
+          onClick={(e) => handleEdit(e.target, data.priority)}
           onChange={(e) => setChangedNotes(e.target.value)}
-          onBlur={e => handleSave(e.target, data.notes)}
+          onBlur={(e) => handleSave(e.target, data.notes)}
         />
         <span>
-          <AiOutlineExclamationCircle size={24} onClick={()=>handleChangePriority(data._id)}/>
+          <AiOutlineExclamationCircle
+            size={24}
+            onClick={() => handleChangePriority(data._id)}
+          />
         </span>
       </li>
     </>

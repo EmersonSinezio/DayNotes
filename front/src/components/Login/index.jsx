@@ -1,10 +1,10 @@
 // src\components\Login\index.jsx
 import React, { useState } from "react";
-import { FaRegUserCircle } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import api from "../../services/api";
 import "./styles/login_styles.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -27,6 +27,9 @@ const Login = () => {
       // 2. Armazenar token
       localStorage.setItem("token", loginRes.data.token);
 
+      // Emitindo notificação
+      toast.success("Login realizado com sucesso!");
+
       // 3. Buscar dados do usuário
       const userRes = await api.get("/users/me", {
         headers: { Authorization: `Bearer ${loginRes.data.token}` },
@@ -39,7 +42,40 @@ const Login = () => {
       window.location.href = `/user/${userRes.data.userid}/notes`;
     } catch (err) {
       console.error("Login error:", err);
-      setError("Invalid credentials!");
+
+      // Tratamento de erros com react-toastify
+      let errorMessage = "Erro desconhecido";
+
+      if (err.response) {
+        // Erros da API (4xx, 5xx)
+        if (err.response.status === 401) {
+          errorMessage = "Credenciais inválidas!";
+        } else if (err.response.status === 500) {
+          errorMessage = "Erro no servidor. Tente novamente mais tarde.";
+        } else {
+          errorMessage =
+            err.response.data?.message || `Erro ${err.response.status}`;
+        }
+      } else if (err.request) {
+        // Erros de rede (sem resposta)
+        errorMessage = "Sem resposta do servidor. Verifique sua conexão.";
+      } else {
+        // Outros erros
+        errorMessage = err.message || "Erro ao processar a requisição";
+      }
+
+      setError(errorMessage);
+
+      // Exibir notificação com react-toastify
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     } finally {
@@ -49,6 +85,17 @@ const Login = () => {
 
   return (
     <div className="sign-in-container">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="sign-in-box">
         <div className="sign-in-header">
           <h1 className="sign-in-title">Login</h1>
@@ -109,7 +156,15 @@ const Login = () => {
             </div>
 
             <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Loading..." : "Login"}
+              {loading ? (
+                <img
+                  src="/assets/load.svg"
+                  alt="loading"
+                  className="loading-icon"
+                />
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
         </div>

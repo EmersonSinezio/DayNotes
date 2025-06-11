@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 //  Styles
-import "../components/styles/container.css";
-import "../components/styles/sidebar.css";
-import "../components/styles/main.css";
+
+import "../styles/newNote/notes.css";
+
 //Components
 import Notes from "../components/Notes";
 //  api
@@ -10,6 +10,7 @@ import api from "../services/api";
 import { useEffect } from "react";
 import RadioButton from "../components/Notes/RadioButton";
 import { useParams } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 function Homepage({ user, logout }) {
   const [selectedValue, setSelectedValue] = useState("all");
