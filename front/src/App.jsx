@@ -38,7 +38,12 @@ const App = () => {
     setUser(null);
   };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading)
+    return (
+      <div>
+        <img src="/assets/load.svg" alt="loading" className="loading-icon" />
+      </div>
+    );
   return (
     <>
       {/* <Header logout={logout} /> */}

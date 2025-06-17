@@ -57,7 +57,11 @@ const Sidebar = ({ User }) => {
           </div>
         </div>
       ) : (
-        <div className="sidebar-container">
+        <div className={`sidebar-container ${openBar}`}>
+          <FaChevronCircleRight
+            className={`sidebar-icon-${openBar}`}
+            onClick={handleOpen}
+          />
           <div>
             <h1>Bem vindo ao Notes</h1>
             <p id="user-icon">{user.username[0]}</p>

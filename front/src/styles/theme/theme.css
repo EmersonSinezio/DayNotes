@@ -19,7 +19,7 @@
   --link-color: #2563eb;
 }
 
-[data-theme="dark"] {
+[data-theme=dark] {
   --bg-primary: #121826;
   --bg-secondary: #1f2937;
   --text-primary: #f8fafc;
@@ -44,4 +44,4 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
+}/*# sourceMappingURL=theme.css.map */

@@ -41,23 +41,25 @@
   position: relative;
   right: -160px;
   top: 50vh;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
 }
 
 .sidebar-container {
-  position: fixed;
+  position: relative;
   width: 320px;
   height: 100vh;
   background-color: #fff;
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  padding: 30px 20px;
+  padding: 30px 0.5rem;
   top: 0;
   left: 0;
   text-align: center;
   .sidebar-content {
     flex-direction: column;
-    height: 100%;
-    @include flex-around;
+    height: 50%;
+    @include flex-between;
   }
   .buttons {
     #link {
@@ -88,21 +90,10 @@
 }
 .sidebar-icon-close {
   @include sidebar-icon;
-  transition: transform 0.5s ease-in-out;
 }
 .sidebar-icon-open {
+  @include sidebar-icon;
   transform: rotate(180deg);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #333;
-  color: #fff;
-  @include flex-center;
-  margin: 2rem auto;
-  position: relative;
-  right: -160px;
-  top: 50vh;
-  transition: transform 0.5s ease-in-out;
 }
 #user-icon {
   width: 50px;
