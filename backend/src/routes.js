@@ -15,7 +15,9 @@ routes.delete(
   verifyUser,
   AnnotationController.delete
 );
+routes.put("/users/:userid/notes/:id", verifyUser, AnnotationController.update);
 
+//  Rota de prioridades
 routes.get("/users/:userid/priorities", verifyUser, PriorityController.read);
 routes.put(
   "/users/:userid/priorities/:id",
