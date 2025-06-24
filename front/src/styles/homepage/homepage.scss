@@ -59,7 +59,17 @@ $break-sm: 600px;
   height: 100vh;
   display: flex;
   .notepad-add-container {
-    width: 35%;
-    @include flex-center;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .notes-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

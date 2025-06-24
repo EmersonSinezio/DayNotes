@@ -5,7 +5,16 @@
 }
 
 #app .notepad-add-container {
-  width: 35%;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app .notes-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

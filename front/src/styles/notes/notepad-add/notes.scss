@@ -53,10 +53,15 @@ $break-sm: 600px;
   }
 }
 
+.notepad-add-container {
+  width: 100%;
+  height: 100vh;
+  @include flex-center();
+}
 .notepad-add-content {
   width: 100%;
   height: 80%;
-  // background-color: rgba(246, 244, 241, 1);
+  margin-top: 10%;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   border-radius: $radius-sm;
   @include flex-around();

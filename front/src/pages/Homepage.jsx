@@ -18,9 +18,7 @@ function Homepage() {
         <NotesAdd />
       </aside>
       <aside className="notes-container">
-        <div>
-          <Notes />
-        </div>
+        <Notes />
       </aside>
     </div>
   );
