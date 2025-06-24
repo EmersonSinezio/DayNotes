@@ -55,7 +55,10 @@ const Notes = () => {
   };
 
   const handleUpdateNote = async () => {
-    if (!editingNote) return;
+    if (!editingNote || !editTitle.trim()) {
+      alert("O título é obrigatório");
+      return;
+    }
 
     try {
       await api.put(`/users/${userid}/notes/${editingNote._id}`, {
