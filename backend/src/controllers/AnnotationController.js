@@ -47,7 +47,31 @@ module.exports = {
       });
     }
   },
+  async update(req, res) {
+    try {
+      const { id, userid } = req.params;
+      const { title, notes } = req.body;
 
+      // Atualiza a nota apenas se pertencer ao usuário
+      const updatedNote = await Annotations.findOneAndUpdate(
+        { _id: id, user: userid },
+        { title, notes },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedNote) {
+        return res.status(404).json({ error: "Anotação não encontrada" });
+      }
+
+      return res.json(updatedNote);
+    } catch (error) {
+      console.error("Erro ao atualizar anotação:", error);
+      return res.status(500).json({
+        error: "Erro interno no servidor",
+        details: error.message,
+      });
+    }
+  },
   async delete(req, res) {
     try {
       const { id, userid } = req.params;
