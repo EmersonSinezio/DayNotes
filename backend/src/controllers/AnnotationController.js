@@ -19,7 +19,7 @@ module.exports = {
       const { userid } = req.params;
       const { title, notes, priority } = req.body;
 
-      const user = await User.findOne({ userid });
+      const user = await User.findOne({ userid: userid });
       if (!user) {
         return res.status(404).json({ error: "Usuário não encontrado" });
       }

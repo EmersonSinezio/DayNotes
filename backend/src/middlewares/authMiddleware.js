@@ -8,7 +8,7 @@ const verifyUser = async (req, res, next) => {
     if (!token) return res.status(401).json({ message: "Acesso negado" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId);
+    const user = await User.findOne({ userid: decoded.userid });
 
     if (!user)
       return res.status(404).json({ message: "Usuário não encontrado" });

@@ -61,7 +61,7 @@ module.exports = {
       }
 
       const token = jwt.sign(
-        { userId: user._id },
+        { userid: user.userid },
         process.env.JWT_SECRET, // Garantir que está definido no .env
         { expiresIn: "1h" }
       );
@@ -78,7 +78,9 @@ module.exports = {
       if (!token) return res.status(401).json({ message: "Acesso negado" });
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.userId).select("-password");
+      const user = await User.findOne({ userid: decoded.userid }).select(
+        "-password"
+      );
 
       if (!user)
         return res.status(404).json({ message: "Usuário não encontrado" });
