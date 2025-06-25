@@ -1,6 +1,7 @@
 usercontroller.js;
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+import crypto from "crypto";
 const jwt = require("jsonwebtoken");
 module.exports = {
   async register(req, res) {
@@ -17,7 +18,7 @@ module.exports = {
       const user = new User({
         username,
         password,
-        userid: bcrypt.randomBytes(8).toString("hex"),
+        userid: crypto.randomUUID(),
         createdAt: Date.now(),
       });
       await user.save();

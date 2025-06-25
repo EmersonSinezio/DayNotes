@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   username: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: "User",
     required: [true, "Nome de usuário é obrigatório"],
     unique: true,
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => Math.random().toString(36).substr(2, 9), // ID mais seguro
+    default: () => Math.random().toString(36).substr(2, 9),
   },
 });
 
