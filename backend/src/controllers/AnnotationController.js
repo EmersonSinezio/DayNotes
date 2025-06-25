@@ -1,6 +1,5 @@
 const Annotations = require("../models/AnnotationData");
 const User = require("../models/User");
-const crypto = require("crypto");
 
 module.exports = {
   async read(req, res) {
@@ -13,39 +12,51 @@ module.exports = {
       return res.status(500).json({ error: "Erro interno no servidor" });
     }
   },
-
   async create(req, res) {
     try {
-      const user = req.user; // pega direto do middleware
+      console.log("---------- NOVA REQUISIÇÃO ----------");
+      console.log("Headers:", req.headers);
+      console.log("Params:", req.params);
+      console.log("Body:", req.body);
+
+      const { userid } = req.params;
       const { title, notes, priority } = req.body;
 
-      // Gera um id único para a anotação
-      let id, exists;
-      do {
-        id = crypto.randomBytes(8).toString("hex");
-        exists = await Annotations.findOne({ id });
-      } while (exists);
+      console.log("Buscando usuário com userid:", userid);
+      const user = await User.findOne({ userid });
 
-      const annotation = await Annotations.create({
+      if (!user) {
+        console.error("Usuário não encontrado");
+        return res.status(404).json({ error: "Usuário não encontrado" });
+      }
+
+      console.log("Criando nota para o usuário:", user);
+      const annotationCreated = await Annotations.create({
         title,
         notes,
-        priority: !!priority,
-        user: req.user._id, // seu schema usa user: String
-        id,
+        priority: priority || false,
+        user: user.userid,
+        id: user._id,
       });
 
-      return res.status(201).json(annotation);
-    } catch (err) {
-      console.error("Erro ao criar anotação:", err);
-      return res
-        .status(500)
-        .json({ error: "Erro ao criar anotação", details: err.message });
+      console.log("Nota criada com sucesso:", annotationCreated);
+      return res.status(201).json(annotationCreated);
+    } catch (error) {
+      console.error("Erro detalhado:", error);
+      return res.status(500).json({
+        error: "Erro ao criar anotação",
+        details: error.message,
+      });
     }
   },
-
   async update(req, res) {
     try {
-      const { userid, id } = req.params;
+      // Os parâmetros devem ser: userid e id (não "id" e "userid")
+      console.log("--- UPDATE REQUEST ---");
+      console.log("Params:", req.params);
+      console.log("Body:", req.body);
+      const { userid, id } = req.params; // CORREÇÃO AQUI - ordem invertida
+
       const { title, notes } = req.body;
 
       const updatedNote = await Annotations.findOneAndUpdate(
@@ -67,7 +78,6 @@ module.exports = {
       });
     }
   },
-
   async delete(req, res) {
     try {
       const { id, userid } = req.params;

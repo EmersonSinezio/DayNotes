@@ -1,27 +1,25 @@
+usercontroller.js;
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const cripto = require("crypto");
 const jwt = require("jsonwebtoken");
 module.exports = {
   async register(req, res) {
     try {
       const { username, password } = req.body;
-
-      // Gera userid único com verificação de colisão
-      let userid;
-      let existingUser;
-      do {
-        userid = crypto.randomBytes(8).toString("hex");
-        existingUser = await User.findOne({ userid });
-      } while (existingUser);
+      // Verificar se usuário já existe
+      const existingUser = await User.findOne({
+        $or: [{ username }],
+      });
+      if (existingUser) {
+        return res.status(400).json({ message: "Usuário já existe" });
+      }
 
       const user = new User({
         username,
         password,
-        userid,
+        userid: bcrypt.randomBytes(8).toString("hex"),
         createdAt: Date.now(),
       });
-
       await user.save();
       res.status(201).json({ message: "Usuário criado com sucesso" });
     } catch (error) {
@@ -61,7 +59,7 @@ module.exports = {
       }
 
       const token = jwt.sign(
-        { userid: user.userid },
+        { userId: user._id },
         process.env.JWT_SECRET, // Garantir que está definido no .env
         { expiresIn: "1h" }
       );
@@ -78,9 +76,7 @@ module.exports = {
       if (!token) return res.status(401).json({ message: "Acesso negado" });
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findOne({ userid: decoded.userid }).select(
-        "-password"
-      );
+      const user = await User.findById(decoded.userId).select("-password");
 
       if (!user)
         return res.status(404).json({ message: "Usuário não encontrado" });
