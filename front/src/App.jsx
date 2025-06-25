@@ -1,12 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { Navigate } from "react-router-dom";
 import api from "./services/api";
 import { useState, useEffect } from "react";
-import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,42 +37,45 @@ const App = () => {
     localStorage.removeItem("user");
     setUser(null);
   };
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-  };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading)
+    return (
+      <div>
+        <img src="/assets/load.svg" alt="loading" className="loading-icon" />
+      </div>
+    );
   return (
-    <Router>
-      <Header logout={logout} />
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            user ? <Navigate to={`/user/${user.userid}/notes`} /> : <Login />
-          }
-        />
-        <Route
-          path="/user/:userid/notes"
-          element={
-            user ? (
-              <Homepage user={user} logout={logout} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/"
-          element={
-            <Navigate to={user ? `/user/${user.userid}/notes` : "/login"} />
-          }
-        />
-      </Routes>
-    </Router>
+    <>
+      {/* <Header logout={logout} /> */}
+      <div className="App">
+        <Sidebar User={user} />
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              user ? <Navigate to={`/user/${user.userid}/notes`} /> : <Login />
+            }
+          />
+          <Route
+            path="/user/:userid/notes"
+            element={
+              user ? (
+                <Homepage user={user} logout={logout} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <Navigate to={user ? `/user/${user.userid}/notes` : "/login"} />
+            }
+          />
+        </Routes>
+      </div>
+    </>
   );
 };
 

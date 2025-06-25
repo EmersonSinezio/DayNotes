@@ -5,7 +5,9 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  width: 100%;
   background: linear-gradient(90deg, #fdfbfb 0%, #f5f6f6 100%);
+  padding-right: 10vw;
 }
 
 .sign_up-main-container {

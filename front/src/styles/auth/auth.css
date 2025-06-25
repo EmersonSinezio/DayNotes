@@ -1,0 +1,77 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.auth-container > div {
+  width: 50vw;
+  height: 70vh;
+  background: linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+}
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.auth-container > div form {
+  width: 40%;
+  margin-bottom: 1rem;
+}
+.input-block {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+.auth-container > div button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #eb8f7a;
+  color: #fff;
+  cursor: pointer;
+}
+.auth-container > div button:hover {
+  background-color: #fabbad;
+  transition: background-color 0.5s;
+}
+
+.auth-container > div .input-block input {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: linear-gradient(90deg, #fabbad, #ffb4a2);
+}
+
+.auth-container > div .input-block input:hover {
+  background-color: #eb8f7a;
+  transition: background-color 0.5s;
+}
+
+.auth-container > div .input-block input:focus {
+  outline: none;
+}
+.auth-container > div .icon {
+  color: #eb8f7a;
+  margin-bottom: 1rem;
+  filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+.auth-container > div p em {
+  color: #eb8f7a;
+  cursor: pointer;
+  text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+.auth-container > div p em:hover {
+  color: #fabbad;
+  transition: text-shadow 0.5s;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
