@@ -1,5 +1,6 @@
 const Annotations = require("../models/AnnotationData");
-const User = require("../models/User"); // Adicione esta linha
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 module.exports = {
   async read(req, res) {
     try {
@@ -35,6 +36,7 @@ module.exports = {
         notes,
         priority: priority || false,
         user: user.userid,
+        id: bcrypt.randomBytes(6).toString("hex"),
       });
 
       console.log("Nota criada com sucesso:", annotationCreated);

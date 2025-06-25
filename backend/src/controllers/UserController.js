@@ -16,7 +16,7 @@ module.exports = {
       const user = new User({
         username,
         password,
-        userid: Math.round(Math.random() * 100000000000),
+        userid: bcrypt.randomBytes(8).toString("hex"),
         createdAt: Date.now(),
       });
       await user.save();
