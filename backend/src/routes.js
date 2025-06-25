@@ -7,6 +7,8 @@ const PriorityController = require("./controllers/PriorityController");
 const UserController = require("./controllers/UserController");
 const verifyUser = require("./middlewares/authMiddleware");
 
+console.log("rotas carregadas");
+
 //Rota de anotações
 routes.get("/users/:userid/notes", verifyUser, AnnotationController.read);
 routes.post("/users/:userid/notes", verifyUser, AnnotationController.create);

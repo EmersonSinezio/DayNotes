@@ -3,13 +3,12 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 console.log(process.env.MONGODB_URI);
-
 if (!process.env.MONGODB_URI) {
   throw new Error("🔴 MONGODB_URI não definida no .env");
 }
 
 const MONGODB_URI = process.env.MONGODB_URI;
-
+mongoose.set("strictQuery", true);
 const mongooseOptions = {
   serverSelectionTimeoutMS: 15000,
   socketTimeoutMS: 30000,
@@ -21,6 +20,7 @@ let cached = global.mongoose;
 if (!cached) cached = global.mongoose = { conn: null, promise: null };
 
 const connectDB = async () => {
+  console.log("🔄 Tentando conectar ao MongoDB...");
   if (cached.conn) return cached.conn;
 
   try {
