@@ -49,10 +49,14 @@ module.exports = {
   },
   async update(req, res) {
     try {
-      const { id, userid } = req.params;
+      // Os parâmetros devem ser: userid e id (não "id" e "userid")
+      console.log("--- UPDATE REQUEST ---");
+      console.log("Params:", req.params);
+      console.log("Body:", req.body);
+      const { userid, id } = req.params; // CORREÇÃO AQUI - ordem invertida
+
       const { title, notes } = req.body;
 
-      // Atualiza a nota apenas se pertencer ao usuário
       const updatedNote = await Annotations.findOneAndUpdate(
         { _id: id, user: userid },
         { title, notes },
