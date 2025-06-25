@@ -16,37 +16,30 @@ module.exports = {
 
   async create(req, res) {
     try {
-      const { userid } = req.params;
+      const user = req.user; // pega direto do middleware
       const { title, notes, priority } = req.body;
 
-      const user = await User.findOne({ userid: userid });
-      if (!user) {
-        return res.status(404).json({ error: "Usuário não encontrado" });
-      }
-
-      // Gera ID único com verificação de colisão
-      let id;
-      let existingNote;
+      // Gera um id único para a anotação
+      let id, exists;
       do {
         id = crypto.randomBytes(8).toString("hex");
-        existingNote = await Annotations.findOne({ id });
-      } while (existingNote);
+        exists = await Annotations.findOne({ id });
+      } while (exists);
 
-      const annotationCreated = await Annotations.create({
+      const annotation = await Annotations.create({
         title,
         notes,
-        priority: priority || false,
-        user: user.userid,
+        priority: !!priority,
+        user: req.user._id, // seu schema usa user: String
         id,
       });
 
-      return res.status(201).json(annotationCreated);
-    } catch (error) {
-      console.error("Erro ao criar anotação:", error);
-      return res.status(500).json({
-        error: "Erro ao criar anotação",
-        details: error.message,
-      });
+      return res.status(201).json(annotation);
+    } catch (err) {
+      console.error("Erro ao criar anotação:", err);
+      return res
+        .status(500)
+        .json({ error: "Erro ao criar anotação", details: err.message });
     }
   },
 
