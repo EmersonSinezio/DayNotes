@@ -112,29 +112,6 @@ http://localhost:3000
 
 ## 🛡️ Sistema de Segurança
 
-### Autenticação
-
-sequenceDiagram
-participant Client
-participant Server
-participant DB
-
-    Client->>Server: POST /users/register
-    Server->>DB: Valida usuário único
-    Server->>Server: Criptografa senha (bcrypt)
-    Server->>DB: Salva novo usuário
-    Server->>Client: 201 Created
-
-    Client->>Server: POST /users/login
-    Server->>DB: Busca usuário
-    Server->>Server: Compara senhas (bcrypt)
-    Server->>Server: Gera JWT
-    Server->>Client: 200 OK + token
-
-    Client->>Server: Requests com token JWT
-    Server->>Server: Verifica token
-    Server->>DB: Operações seguras
-
 ### Validações
 
 - **Usuário:**
