@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/api";
-import "./styles/register_styles.css";
+import { FiUser, FiLock, FiMail } from "react-icons/fi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../../styles/auth/auth.css";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccessMessage("");
 
     const formData = {
       username: e.target.username.value.trim(),
@@ -23,7 +21,7 @@ const Register = () => {
     };
 
     try {
-      // Validações do cliente
+      // Validações
       if (!formData.terms) {
         throw new Error("Você deve aceitar os termos e condições");
       }
@@ -36,126 +34,97 @@ const Register = () => {
         throw new Error("A senha deve ter pelo menos 6 caracteres");
       }
 
-      const response = await api.post("/users", {
+      // Chamada à API
+      await api.post("/users", {
         username: formData.username,
         password: formData.password,
       });
 
-      if (response.status === 201) {
-        setSuccessMessage("Cadastro realizado com sucesso! Redirecionando...");
-        setTimeout(() => navigate("/login"), 2000);
-      }
+      toast.success("Cadastro realizado com sucesso! Redirecionando...");
+      window.location.href = "/login";
     } catch (error) {
-      console.error("Registration error:", error);
-      setError(
-        error.response?.data?.message || error.message || "Erro no cadastro"
-      );
+      toast.error(error.message || "Erro ao cadastrar");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="sign_up-container">
-      <div className="sign_up-main-container">
-        <div className="sign_up-content-container">
-          <div className="sign_up-text-center">
-            <h1 className="sign_up-title">Criar Conta</h1>
-            <p className="sign_up-subtitle">
-              Já possui uma conta?
-              <Link className="sign_up-signin-link" to="/login">
-                Fazer login
-              </Link>
-            </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="logo">Notes</div>
+          <h1>Criar uma conta</h1>
+          <p>Preencha os campos para se registrar</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="input-group">
+            <FiUser className="input-icon" />
+            <input
+              type="text"
+              name="username"
+              placeholder="Nome de usuário"
+              required
+              disabled={loading}
+            />
           </div>
 
-          <div className="sign_up-form-section">
-            {error && <div className="sign_up-error-message">{error}</div>}
-            {successMessage && (
-              <div className="sign_up-success-message">{successMessage}</div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-              <div className="sign_up-form-grid">
-                <div className="sign_up-form-group">
-                  <label htmlFor="username" className="sign_up-input-label">
-                    Nome de usuário
-                  </label>
-                  <div className="sign_up-input-container">
-                    <input
-                      type="text"
-                      id="username"
-                      className="sign_up-input-field"
-                      required
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-
-                <div className="sign_up-form-group">
-                  <label htmlFor="password" className="sign_up-input-label">
-                    Senha
-                  </label>
-                  <div className="sign_up-input-container">
-                    <input
-                      type="password"
-                      id="password"
-                      className="sign_up-input-field"
-                      required
-                      minLength="6"
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-
-                <div className="sign_up-form-group">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="sign_up-input-label"
-                  >
-                    Confirme a Senha
-                  </label>
-                  <div className="sign_up-input-container">
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      className="sign_up-input-field"
-                      required
-                      disabled={loading}
-                    />
-                  </div>
-                </div>
-
-                <div className="sign_up-checkbox-container">
-                  <div className="sign_up-checkbox-wrapper">
-                    <input
-                      id="terms"
-                      name="terms"
-                      type="checkbox"
-                      className="sign_up-checkbox-input"
-                      disabled={loading}
-                    />
-                  </div>
-                  <label htmlFor="terms" className="sign_up-checkbox-label">
-                    Eu aceito os{" "}
-                    <a className="sign_up-terms-link" href="#">
-                      Termos e Condições
-                    </a>
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  className="sign_up-submit-button"
-                  disabled={loading}
-                >
-                  {loading ? "Registrando..." : "Registrar"}
-                </button>
-              </div>
-            </form>
+          <div className="input-group">
+            <FiLock className="input-icon" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Senha"
+              required
+              minLength="6"
+              disabled={loading}
+            />
           </div>
+
+          <div className="input-group">
+            <FiLock className="input-icon" />
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirmar senha"
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="terms-container">
+            <label className="terms-label">
+              <input
+                type="checkbox"
+                name="terms"
+                className="terms-checkbox"
+                disabled={loading}
+              />
+              <span>
+                Eu aceito os{" "}
+                <a href="#" className="terms-link">
+                  Termos e Condições
+                </a>
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? <span className="spinner"></span> : "Registrar"}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
+            Já tem uma conta?{" "}
+            <Link to="/login" className="auth-link">
+              Entrar
+            </Link>
+          </p>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 };

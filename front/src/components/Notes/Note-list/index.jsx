@@ -27,9 +27,6 @@ const Notes = () => {
 
   const deleteNote = useCallback(
     async (id) => {
-      const confirmation = window.confirm("Tem certeza que deseja deletar?");
-      if (!confirmation) return;
-
       try {
         await api.delete(`/users/${userid}/notes/${id}`);
         getAllNotes();
@@ -61,7 +58,7 @@ const Notes = () => {
     }
 
     try {
-      await api.put(`/users/${userid}/notes/${editingNote._id}`, {
+      await api.put(`/users/${userid}/contents/${editingNote._id}`, {
         title: editTitle,
         notes: editContent,
       });
@@ -71,7 +68,17 @@ const Notes = () => {
       console.error("Erro ao atualizar nota:", error);
     }
   };
+  const handleDeleteFromModal = () => {
+    if (!editingNote) return;
 
+    const confirmation = window.confirm(
+      "Tem certeza que deseja deletar esta nota?"
+    );
+    if (!confirmation) return;
+
+    deleteNote(editingNote._id);
+    closeEditModal();
+  };
   return (
     <div className="notes-container">
       {/* Modal de Edição */}
@@ -79,7 +86,14 @@ const Notes = () => {
         <div className="modal-overlay">
           <div className="edit-modal">
             <div className="edit-modal-content">
-              <h2>Editar Nota</h2>
+              <div className="modal-header">
+                <h2>Editar Nota</h2>
+                <FaTrashAlt
+                  size={20}
+                  className="delete-icon"
+                  onClick={handleDeleteFromModal}
+                />
+              </div>
               <div className="modal-inputs">
                 <input
                   type="text"
@@ -117,11 +131,6 @@ const Notes = () => {
                     size={25}
                     className="icon"
                     onClick={() => openEditModal(note)}
-                  />
-                  <FaTrashAlt
-                    size={25}
-                    className="icon"
-                    onClick={() => deleteNote(note._id)}
                   />
                 </div>
                 <div className="note-content">

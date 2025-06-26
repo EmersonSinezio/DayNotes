@@ -1,25 +1,18 @@
+// Variáveis atualizadas
+$color-primary: #eb8f7a;
+$color-primary-light: #fabbad;
+$color-secondary: #5a67d8;
+$color-text: #333;
+$color-text-light: #666;
+$color-border: #e2e8f0;
+$color-background: #f8fafc;
 $color-white: #fff;
-$color-gray: #666;
-$color-light-gray: #acacac;
-$color-dark: #333;
-$color-border: #eee;
-$color-primary: #ffd3ca;
+$radius-sm: 8px;
+$radius-md: 12px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
 
-$radius-sm: 0.625rem; // 10px
-$radius-md: 1rem;
-$radius-full: 50%;
-$box-shadow: 0 0 0.875rem 0 rgba(0, 0, 0, 0.2); // 14px
-$transition: 0.3s ease;
-
-$padding-sm: 0.5rem;
-$padding-md: 1rem;
-
-$padding-lg: 2rem;
-$padding-xl: 3rem;
-
-$break-md: 1000px;
-$break-sm: 600px;
-
+// Mixins
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -32,64 +25,147 @@ $break-sm: 600px;
   align-items: center;
 }
 
-@mixin flex-around {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-@mixin button {
-  width: 80%;
-  margin: 10px 0;
-  padding: 10px 0;
-  border: none;
-  border-radius: 5px;
-  background-color: #eb8f7a;
-  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: 0.5s;
-  &:hover {
-    background-color: #fabbad;
-    color: #333;
-  }
+@mixin card-style {
+  background: $color-white;
+  border-radius: $radius-md;
+  box-shadow: $box-shadow;
+  transition: $transition;
 }
 
+// Estilos para o componente
 .notepad-add-container {
   width: 100%;
   height: 100vh;
   @include flex-center();
+  padding: 20px;
+  margin-left: 15vw;
 }
+
 .notepad-add-content {
   width: 100%;
+  max-width: 500px;
   height: 80%;
-  margin-top: 10%;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-  border-radius: $radius-sm;
-  @include flex-around();
-  flex-direction: column;
-  padding: 1rem 3rem;
+  @include card-style();
+  @include flex-center();
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &.focused {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
 }
-form {
-  width: 100%;
+
+.form {
+  .form-header {
+    @include flex-between;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 1.5rem;
+      color: $color-text;
+      margin: 0;
+    }
+
+    .clear-icon {
+      color: $color-text-light;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
   .inpt {
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 20px;
+
     input,
-    textarea,
-    label {
+    textarea {
       width: 100%;
-      margin: 0.5rem auto;
+      padding: 14px;
+      border: 1px solid $color-border;
+      border-radius: $radius-sm;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background: $color-white;
+      color: $color-text;
+
+      &::placeholder {
+        color: #a0aec0;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary-light;
+        box-shadow: 0 0 0 3px rgba($color-primary-light, 0.3);
+      }
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+  }
+
+  .add-btn {
+    button {
+      @include flex-center;
+      width: 100%;
+      padding: 14px;
+      background: $color-primary;
+      color: $color-white;
+      border: none;
+      border-radius: $radius-sm;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+
+      .icon {
+        margin-right: 10px;
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        background: darken($color-primary, 8%);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color-primary-light, 0.5);
+      }
     }
   }
 }
-.add-btn {
-  width: 100%;
-  margin: 0 auto;
-  button {
-    padding: 0.5rem 0;
-    @include button();
-    width: 100%;
+
+// Responsividade
+@media (max-width: 600px) {
+  .notepad-add-content {
+    padding: 20px 15px;
   }
-}
-.notes-container {
-  width: 100%;
+
+  .form {
+    .form-header h1 {
+      font-size: 1.3rem;
+    }
+
+    .inpt {
+      input,
+      textarea {
+        padding: 12px;
+      }
+    }
+
+    .add-btn button {
+      padding: 12px;
+    }
+  }
 }

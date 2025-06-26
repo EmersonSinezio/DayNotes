@@ -1,279 +1,239 @@
-@mixin button {
-  width: 80%;
-  margin: 10px 0;
-  padding: 10px 0;
-  border: none;
-  border-radius: 5px;
-  background-color: #eb8f7a;
-  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: 0.5s;
-  &:hover {
-    background-color: #fabbad;
-    color: #333;
-  }
-}
+/* Variáveis */
+$sidebar-bg: #fff;
+$sidebar-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
+$sidebar-width: 280px;
+$sidebar-closed-width: 60px;
+$primary-color: #eb8f7a;
+$primary-light: #fabbad;
+$text-color: #333;
+$text-light: #666;
+$border-color: #e2e8f0;
+$transition: all 0.3s ease;
 
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-@mixin flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-@mixin flex-around {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-@mixin sidebar-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #333;
-  color: #fff;
-  @include flex-center;
-  margin: 2rem auto;
-  position: relative;
-  right: -160px;
-  top: 50vh;
-  cursor: pointer;
-  transition: transform 0.5s ease-in-out;
-}
-
+/* Estilos principais */
 .sidebar-container {
-  position: relative;
-  width: 320px;
-  height: 100vh;
-  background-color: #fff;
-  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 30px 0.5rem;
+  position: fixed;
   top: 0;
   left: 0;
-  text-align: center;
-  .sidebar-content {
-    flex-direction: column;
-    height: 50%;
-    @include flex-between;
-  }
-  .buttons {
-    #link {
-      button {
-        @include button;
-      }
-    }
-  }
-  h3 {
-    margin: 1rem auto;
+  height: 100vh;
+  background: $sidebar-bg;
+  box-shadow: $sidebar-shadow;
+  overflow-x: hidden;
+  z-index: 1000;
+  transition: $transition;
+}
+
+.sidebar-container.open {
+  width: $sidebar-width;
+  .sidebar-toggle {
+    transform: rotate(180deg);
   }
 }
-.open {
-  left: 0;
-  transition: 0.5s;
+
+.sidebar-container.close {
+  width: $sidebar-closed-width;
 }
-.close {
-  left: -280px;
-  transition: 0.5s;
-}
-.sidebar-icon {
-  @include sidebar-icon;
-}
-.sidebar-icon:hover {
+
+.sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  background: none;
+  border: none;
+  color: $text-color;
   cursor: pointer;
-  background-color: #eb8f7a;
-  transition: 0.5s;
+  z-index: 1001;
+  transition: $transition;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
 }
-.sidebar-icon-close {
-  @include sidebar-icon;
+
+.sidebar-toggle:hover {
+  color: $primary-color;
 }
-.sidebar-icon-open {
-  @include sidebar-icon;
-  transform: rotate(180deg);
-}
-#user-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #333;
-  color: #fff;
-  @include flex-center;
-  margin: 2rem auto;
-}
-.sidebar-buttons {
-  width: 100%;
-  @include flex-center;
+
+.sidebar-content {
+  padding: 30px 20px;
+  height: 100%;
+  display: flex;
   flex-direction: column;
-  position: relative;
-  button {
-    @include button();
+}
+
+.sidebar-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $border-color;
+
+  h1 {
+    font-size: 1.5rem;
+    color: $text-color;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $text-light;
   }
 }
 
-// --------
-/* ThemeSwitch.scss */
-// Apenas variáveis em Sass
-$hue: 223;
-$trans-dur: 0.3s;
-$trans-timing: cubic-bezier(0.76, 0.05, 0.24, 0.95);
-$trans-timing-in: cubic-bezier(0.76, 0.05, 0.86, 0.06);
-$trans-timing-out: cubic-bezier(0.05, 0.76, 0.06, 0.86);
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 
-// Estilos do switch de tema
-// Variáveis
-$hue: 223;
-$primary: hsl($hue, 90%, 50%);
-$trans-dur: 0.3s;
-$trans-timing: cubic-bezier(0.76, 0.05, 0.24, 0.95);
-$trans-timing-in: cubic-bezier(0.76, 0.05, 0.86, 0.06);
-$trans-timing-out: cubic-bezier(0.05, 0.76, 0.06, 0.86);
-
-// Mixin para transições
-// Variáveis
-$hue: 223;
-$primary: hsl($hue, 90%, 50%);
-$trans-dur: 0.3s;
-$trans-timing: cubic-bezier(0.76, 0.05, 0.24, 0.95);
-$trans-timing-in: cubic-bezier(0.76, 0.05, 0.86, 0.06);
-$trans-timing-out: cubic-bezier(0.05, 0.76, 0.06, 0.86);
-
-// Estilos gerais para o componente
-.switch {
-  margin: auto;
-  position: relative;
-
-  &__input,
-  &__icon {
-    display: block;
+  .user-avatar {
+    font-size: 2.5rem;
+    color: $primary-color;
   }
 
-  &__icon {
-    position: absolute;
-    top: 0.375em;
-    right: 0.375em;
-    width: 0.75em;
-    height: 0.75em;
-    transition: opacity calc(#{$trans-dur} / 2),
-      transform calc(#{$trans-dur} / 2);
+  h2 {
+    font-size: 1.2rem;
+    color: $text-color;
+    margin: 0;
+  }
 
-    polyline {
-      transition: stroke-dashoffset calc(#{$trans-dur} / 2);
-    }
+  .user-email {
+    font-size: 0.85rem;
+    color: $text-light;
+    margin: 0;
+  }
+}
 
-    &--light,
-    &--light polyline {
-      transition-delay: calc(#{$trans-dur} / 2);
-      transition-timing-function: $trans-timing-out;
-    }
+.sidebar-links {
+  flex: 1;
+}
 
-    &--dark {
-      opacity: 0;
-      transform: translateX(-0.75em) rotate(30deg) scale(0.75);
-      transition-timing-function: $trans-timing-in;
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  color: $text-light;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    background: $primary-light;
+    color: $text-color;
+  }
+
+  &.active {
+    background: $primary-color;
+    color: white;
+
+    .link-icon {
+      color: white;
     }
   }
 
-  &__input {
-    background-color: hsl(210, 90%, 70%);
-    border-radius: 0.75em;
-    box-shadow: 0 0 0 0.125em hsla($hue, 90%, 50%, 0),
-      0.125em 0.125em 0.25em hsla($hue, 90%, 10%, 0.2);
-    outline: transparent;
-    position: relative;
-    width: 3.5em;
-    height: 1.5em;
-    -webkit-appearance: none;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: background-color $trans-dur $trans-timing,
-      box-shadow 0.15s linear;
+  .link-icon {
+    margin-right: 15px;
+    font-size: 1.2rem;
+    transition: $transition;
+  }
+}
 
-    &:focus-visible {
-      box-shadow: 0 0 0 0.125em $primary,
-        0.125em 0.125em 0.25em hsla($hue, 90%, 10%, 0.2);
-    }
+.sidebar-prompt {
+  color: $text-light;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
 
-    &:before,
-    &:after {
-      content: "";
-      display: block;
-      position: absolute;
-    }
+.sidebar-link-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: $primary-color;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: $transition;
 
-    &:before {
-      background-color: hsl(50, 90%, 50%);
-      border-radius: inherit;
-      mask-image: linear-gradient(
-        120deg,
-        hsl(0, 0%, 0%) 20%,
-        hsla(0, 0%, 0%, 0) 80%
-      );
-      -webkit-mask-image: linear-gradient(
-        120deg,
-        hsl(0, 0%, 0%) 20%,
-        hsla(0, 0%, 0%, 0) 80%
-      );
-      inset: 0;
-      transition: background-color $trans-dur $trans-timing;
-    }
+  &:hover {
+    background: darken($primary-color, 8%);
+  }
+}
 
-    &:after {
-      background-color: hsl(0, 0%, 100%);
-      border-radius: 50%;
-      box-shadow: 0.05em 0.05em 0.05em hsla($hue, 90%, 10%, 0.1);
-      top: 0.125em;
-      left: 0.125em;
-      width: 1.25em;
-      height: 1.25em;
-      transition: background-color $trans-dur $trans-timing,
-        transform $trans-dur $trans-timing;
-      z-index: 1;
-    }
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  color: $text-light;
+  cursor: pointer;
+  transition: $transition;
 
-    &:checked {
-      background-color: hsl(290, 90%, 40%);
+  &:hover {
+    background: #f8f8f8;
+    color: $primary-color;
+    border-color: $primary-light;
+  }
 
-      &:before {
-        background-color: hsl(220, 90%, 40%);
-      }
+  .icon {
+    margin-right: 10px;
+  }
+}
 
-      &:after {
-        background-color: hsl(0, 0%, 0%);
-        transform: translateX(1.5em);
-      }
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid $border-color;
+}
 
-      ~ .switch__icon--light,
-      ~ .switch__icon--light polyline {
-        transition-delay: 0s;
-        transition-timing-function: $trans-timing-in;
-      }
+/* Quando sidebar está fechada */
+.sidebar-container.close {
+  .sidebar-header,
+  .sidebar-prompt,
+  .sidebar-links,
+  .user-info > div,
+  .logout-button span,
+  .sidebar-footer {
+    display: none;
+  }
 
-      ~ .switch__icon--light {
-        opacity: 0;
-        transform: translateX(-0.75em) rotate(-30deg) scale(0.75);
-      }
+  .sidebar-link {
+    justify-content: center;
 
-      ~ .switch__icon--light polyline {
-        stroke-dashoffset: 1.5;
-      }
-
-      ~ .switch__icon--dark {
-        opacity: 1;
-        transform: translateX(-1.5em);
-        transition-delay: calc(#{$trans-dur} / 2);
-        transition-timing-function: $trans-timing-out;
-      }
+    .link-icon {
+      margin-right: 0;
+      font-size: 1.5rem;
     }
   }
 
-  &__sr {
-    overflow: hidden;
-    position: absolute;
-    width: 1px;
-    height: 1px;
+  .user-info {
+    justify-content: center;
+
+    .user-avatar {
+      font-size: 2rem;
+    }
+  }
+
+  .logout-button {
+    justify-content: center;
+
+    .icon {
+      margin-right: 0;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebar-container.open {
+    width: 100%;
+    max-width: 320px;
   }
 }

@@ -187,3 +187,33 @@ $break-sm: 600px;
   background-color: #f44336;
   color: white;
 }
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #f44336;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.delete-icon:hover {
+  color: #d32f2f;
+  transform: scale(1.1);
+}
+
+/* Ajuste para os botões no modal */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end; /* Alinha à direita */
+  gap: 10px;
+}
+
+/* Se quiser manter o ícone mais destacado */
+.edit-modal-content h2 {
+  margin: 0;
+  flex-grow: 1;
+}
