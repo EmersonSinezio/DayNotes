@@ -8,6 +8,75 @@ import "../../styles/auth/auth.css";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
+
+  const validateUsername = (username) => {
+    // Validação: 3-20 caracteres, apenas letras, números, . e _
+    const regex = /^[a-zA-Z0-9._]{3,20}$/;
+
+    if (!regex.test(username)) {
+      setUsernameError(
+        "Nome de usuário deve ter 3-20 caracteres (apenas letras, números, . e _)"
+      );
+      return false;
+    }
+
+    setUsernameError("");
+    return true;
+  };
+
+  const validatePassword = (password) => {
+    let strength = 0;
+    const errors = [];
+
+    // Verificar comprimento
+    if (password.length < 8) {
+      errors.push("Mínimo 8 caracteres");
+    } else {
+      strength += 25;
+    }
+
+    // Verificar letra maiúscula
+    if (!/[A-Z]/.test(password)) {
+      errors.push("Pelo menos uma letra maiúscula");
+    } else {
+      strength += 25;
+    }
+
+    // Verificar número
+    if (!/[0-9]/.test(password)) {
+      errors.push("Pelo menos um número");
+    } else {
+      strength += 25;
+    }
+
+    // Verificar caractere especial
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.push("Pelo menos um caractere especial (!@#$%^&*)");
+    } else {
+      strength += 25;
+    }
+
+    setPasswordStrength(strength);
+
+    if (errors.length > 0) {
+      setPasswordError(errors.join(", "));
+      return false;
+    }
+
+    setPasswordError("");
+    return true;
+  };
+
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength < 25) return "#ff0000";
+    if (passwordStrength < 50) return "#ff5e00";
+    if (passwordStrength < 75) return "#ffa500";
+    return "#2ecc71";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +90,7 @@ const Register = () => {
     };
 
     try {
-      // Validações
+      // Validações básicas
       if (!formData.terms) {
         throw new Error("Você deve aceitar os termos e condições");
       }
@@ -30,8 +99,12 @@ const Register = () => {
         throw new Error("As senhas não coincidem");
       }
 
-      if (formData.password.length < 6) {
-        throw new Error("A senha deve ter pelo menos 6 caracteres");
+      // Validações avançadas
+      const isUsernameValid = validateUsername(formData.username);
+      const isPasswordValid = validatePassword(formData.password);
+
+      if (!isUsernameValid || !isPasswordValid) {
+        throw new Error("Corrija os erros no formulário");
       }
 
       // Chamada à API
@@ -41,7 +114,7 @@ const Register = () => {
       });
 
       toast.success("Cadastro realizado com sucesso! Redirecionando...");
-      window.location.href = "/login";
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       toast.error(error.message || "Erro ao cadastrar");
     } finally {
@@ -66,9 +139,17 @@ const Register = () => {
               name="username"
               placeholder="Nome de usuário"
               required
+              minLength="3"
+              maxLength="20"
               disabled={loading}
+              onChange={(e) => validateUsername(e.target.value)}
             />
           </div>
+          {usernameError && (
+            <div className="error-message">
+              <small>{usernameError}</small>
+            </div>
+          )}
 
           <div className="input-group">
             <FiLock className="input-icon" />
@@ -77,10 +158,27 @@ const Register = () => {
               name="password"
               placeholder="Senha"
               required
-              minLength="6"
+              minLength="8"
               disabled={loading}
+              onChange={(e) => validatePassword(e.target.value)}
             />
           </div>
+
+          <div className="password-strength-meter">
+            <div
+              className="strength-bar"
+              style={{
+                width: `${passwordStrength}%`,
+                backgroundColor: getPasswordStrengthColor(),
+              }}
+            ></div>
+          </div>
+
+          {passwordError && (
+            <div className="error-message">
+              <small>{passwordError}</small>
+            </div>
+          )}
 
           <div className="input-group">
             <FiLock className="input-icon" />

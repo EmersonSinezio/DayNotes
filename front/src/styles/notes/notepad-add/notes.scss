@@ -1,112 +1,72 @@
-// Variáveis atualizadas
-$color-primary: #eb8f7a;
-$color-primary-light: #fabbad;
-$color-secondary: #5a67d8;
-$color-text: #333;
-$color-text-light: #666;
-$color-border: #e2e8f0;
-$color-background: #f8fafc;
-$color-white: #fff;
-$radius-sm: 8px;
-$radius-md: 12px;
-$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-$transition: all 0.3s ease;
-
-// Mixins
-@mixin flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-@mixin flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-@mixin card-style {
-  background: $color-white;
-  border-radius: $radius-md;
-  box-shadow: $box-shadow;
-  transition: $transition;
-}
-
-// Estilos para o componente
-.notepad-add-container {
-  width: 100%;
-  height: 100vh;
-  @include flex-center();
-  padding: 20px;
-  margin-left: 15vw;
-}
+// notesadd.scss
 
 .notepad-add-content {
+  @include flex-center;
   width: 100%;
-  max-width: 500px;
-  height: 80%;
-  @include card-style();
-  @include flex-center();
-  padding: 25px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100vh;
+  padding: $padding-md-single;
+  max-width: 600px;
+  min-height: 400px;
 
   &.focused {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
+    transform: none;
   }
-}
 
-.form {
-  .form-header {
-    @include flex-between;
-    margin-bottom: 20px;
+  .form {
+    @include card-style;
+    width: 100%;
+    max-width: 400px;
+    padding: $padding-md-single;
 
-    h1 {
-      font-size: 1.5rem;
-      color: $color-text;
-      margin: 0;
-    }
+    .form-header {
+      @include flex-between;
+      margin-bottom: $padding-md-single;
 
-    .clear-icon {
-      color: $color-text-light;
-      cursor: pointer;
-      font-size: 1.2rem;
-      transition: color 0.2s ease;
+      h1 {
+        font-size: 1.5rem;
+        color: $auth-text-color;
+        margin: 0;
+      }
+      .clear-icon {
+        color: $auth-text-light;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: color 0.2s ease;
 
-      &:hover {
-        color: $color-primary;
+        &:hover {
+          color: $color-primary;
+        }
       }
     }
   }
 
   .inpt {
-    margin-bottom: 20px;
+    margin-bottom: $padding-md-single;
 
     input,
     textarea {
       width: 100%;
-      padding: 14px;
+      padding: 0.875rem;
       border: 1px solid $color-border;
       border-radius: $radius-sm;
-      font-size: 1rem;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: $font-size-md;
+      transition: border-color $transition-default,
+        box-shadow $transition-default;
       background: $color-white;
-      color: $color-text;
+      color: $auth-text-color;
 
       &::placeholder {
-        color: #a0aec0;
+        color: $color-light-gray;
       }
-
       &:focus {
         outline: none;
-        border-color: $color-primary-light;
-        box-shadow: 0 0 0 3px rgba($color-primary-light, 0.3);
+        border-color: $auth-primary-light;
+        box-shadow: 0 0 0 3px rgba($auth-primary-light, 0.3);
       }
     }
-
     textarea {
       min-height: 150px;
-      resize: vertical;
+      resize: none;
       line-height: 1.5;
     }
   }
@@ -115,15 +75,15 @@ $transition: all 0.3s ease;
     button {
       @include flex-center;
       width: 100%;
-      padding: 14px;
-      background: $color-primary;
+      padding: $padding-md-single;
+      background-color: #333;
       color: $color-white;
       border: none;
       border-radius: $radius-sm;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background $transition-default, transform 0.2s ease;
 
       .icon {
         margin-right: 10px;
@@ -131,41 +91,34 @@ $transition: all 0.3s ease;
       }
 
       &:hover {
-        background: darken($color-primary, 8%);
+        background-color: #fabbad;
       }
-
       &:active {
         transform: scale(0.98);
       }
-
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 3px rgba($color-primary-light, 0.5);
+        box-shadow: 0 0 0 3px rgba($auth-primary-light, 0.5);
       }
     }
   }
 }
 
-// Responsividade
-@media (max-width: 600px) {
+@media (max-width: $break-sm) {
   .notepad-add-content {
-    padding: 20px 15px;
-  }
+    padding: $padding-sm-single;
 
-  .form {
-    .form-header h1 {
-      font-size: 1.3rem;
-    }
-
-    .inpt {
-      input,
-      textarea {
-        padding: 12px;
+    .form {
+      .inpt {
+        input,
+        textarea {
+          padding: 0.75rem;
+        }
       }
-    }
-
-    .add-btn button {
-      padding: 12px;
+      .add-btn button {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
     }
   }
 }

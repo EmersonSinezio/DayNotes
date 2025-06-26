@@ -1,17 +1,4 @@
-/* Variáveis */
-:root {
-  --primary-color: #eb8f7a;
-  --primary-light: #fabbad;
-  --text-color: #333;
-  --text-light: #666;
-  --border-color: #e2e8f0;
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --error-color: #e53e3e;
-  --success-color: #38a169;
-}
-
-/* Estilos base */
+// auth.scss
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,158 +6,153 @@
 }
 
 body {
-  background-color: var(--bg-color);
+  background-color: $auth-bg-color;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  @include flex-center;
   width: 100%;
-  padding: 20px;
+  height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
 }
 
 .auth-card {
-  background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: $auth-card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $box-shadow-heavy;
   width: 100%;
   max-width: 450px;
-  padding: 40px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+  padding: 20px 40px; // ou usar uma variável, ex: $auth-card-padding
+  transition: transform $transition-default, box-shadow $transition-default;
 
-.auth-card:hover {
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  &:hover {
+    box-shadow: $box-shadow-heavier;
+  }
 }
 
 .auth-header {
   text-align: center;
-  margin-bottom: 30px;
-}
+  margin-bottom: 1rem;
 
-.logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 15px;
-}
+  .logo {
+    font-size: 2rem;
+    font-weight: $font-weight-bold;
+    color: $auth-primary-color;
+    margin-bottom: 0.5rem;
+  }
 
-.auth-header h1 {
-  font-size: 1.8rem;
-  color: var(--text-color);
-  margin-bottom: 10px;
-}
-
-.auth-header p {
-  color: var(--text-light);
-  font-size: 1rem;
+  h1 {
+    font-size: $font-size-xl;
+    color: $auth-text-color;
+  }
+  p {
+    color: $auth-text-light;
+    font-size: $font-size-md;
+  }
 }
 
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+
+  .error-message {
+    color: $auth-error-color;
+    font-size: 0.9rem;
+    margin-top: 0;
+  }
 }
 
 .input-group {
   position: relative;
-}
 
-.input-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-light);
-  font-size: 1.2rem;
-}
+  .input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $auth-text-light;
+    font-size: 1.2rem;
+  }
 
-.input-group input {
-  width: 100%;
-  padding: 15px 15px 15px 45px;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
+  input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 1px solid $auth-border-color;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    transition: all $transition-default;
 
-.input-group input:focus {
-  outline: none;
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 3px rgba(235, 143, 122, 0.2);
+    &:focus {
+      outline: none;
+      border-color: $auth-primary-light;
+      box-shadow: 0 0 0 3px rgba($auth-primary-light, 0.2);
+    }
+  }
 }
 
 .auth-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include flex-between;
   font-size: 0.9rem;
-}
 
-.remember-me {
-  display: flex;
-  align-items: center;
-  color: var(--text-light);
-}
+  .remember-me {
+    @include flex-row;
+    color: $auth-text-light;
 
-.remember-me input {
-  margin-right: 8px;
-}
+    input {
+      margin-right: 8px;
+    }
+  }
 
-.forgot-password {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-}
+  .forgot-password {
+    color: $auth-primary-color;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
 
-.forgot-password:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .auth-button {
-  background-color: var(--primary-color);
-  color: white;
+  @include flex-center;
+  background-color: $auth-primary-color;
+  color: $color-white;
   border: none;
-  border-radius: 10px;
+  border-radius: $radius-md;
   padding: 15px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
   cursor: pointer;
-  transition: background 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  transition: background $transition-default;
   height: 50px;
-}
 
-.auth-button:hover {
-  background-color: #e07a65;
-}
-
-.auth-button:disabled {
-  background-color: var(--primary-light);
-  cursor: not-allowed;
+  &:hover {
+    background-color: darken($auth-primary-color, 12%);
+  }
+  &:disabled {
+    background-color: $auth-primary-light;
+    cursor: not-allowed;
+  }
 }
 
 .auth-footer {
   text-align: center;
   margin-top: 25px;
-  color: var(--text-light);
+  color: $auth-text-light;
   font-size: 0.95rem;
-}
 
-.auth-link {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-}
+  .auth-link {
+    color: $auth-primary-color;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
 
-.auth-link:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 /* Spinner */
@@ -189,40 +171,35 @@ body {
   }
 }
 
-/* Responsividade */
 @media (max-width: 576px) {
   .auth-card {
     padding: 30px 20px;
   }
-
   .auth-header h1 {
-    font-size: 1.5rem;
+    font-size: $font-size-xl;
   }
 }
-// Registro
+
+/* Registro */
 .terms-container {
   margin: 10px 0;
 }
-
 .terms-label {
-  display: flex;
+  @include flex-row;
   align-items: flex-start;
-  color: var(--text-light);
+  color: $auth-text-light;
   font-size: 0.9rem;
   line-height: 1.4;
 }
-
 .terms-checkbox {
-  margin-right: 10px;
-  margin-top: 3px;
+  margin: 3px 10px 0 0;
 }
-
 .terms-link {
-  color: var(--primary-color);
+  color: $auth-primary-color;
+  font-weight: $font-weight-medium;
   text-decoration: none;
-  font-weight: 500;
-}
 
-.terms-link:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }

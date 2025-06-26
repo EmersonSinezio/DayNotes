@@ -49,9 +49,6 @@ module.exports = {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
-      console.log("Tipo da senha recebida:", typeof password);
-      console.log("Tipo do hash armazenado:", typeof user.password);
-
       // Verificar se o JWT_SECRET está definido
       if (!process.env.JWT_SECRET) {
         throw new Error("Variável de ambiente JWT_SECRET não configurada");
@@ -65,7 +62,6 @@ module.exports = {
 
       res.json({ token });
     } catch (error) {
-      console.error("Erro no login:", error);
       res.status(500).json({ message: error.message });
     }
   },

@@ -1,0 +1,139 @@
+// configs.scss
+// ----------------------------------------
+// 🌈 Variáveis
+// ----------------------------------------
+$color-white: #fff;
+$color-gray: #666;
+$color-light-gray: #acacac;
+$color-dark: #333;
+$color-border: #eee;
+$color-primary: #ffd3ca;
+$auth-primary-color: #eb8f7a;
+$auth-primary-light: #fabbad;
+$auth-text-color: #333;
+$auth-text-light: #666;
+$auth-border-color: #e2e8f0;
+$auth-bg-color: #f8fafc;
+$auth-card-bg: #ffffff;
+$auth-error-color: #e53e3e;
+$auth-success-color: #38a169;
+
+// sombras reutilizadas
+$box-shadow-light: 0 0 0.875rem 0 rgba(0, 0, 0, 0.2); // 14px
+$box-shadow-medium: 0 0 0.875rem 0 rgba(0, 0, 0, 0.3); // nota
+$box-shadow-heavy: 0 10px 30px rgba(0, 0, 0, 0.1); // card auth normal
+$box-shadow-heavier: 0 15px 40px rgba(0, 0, 0, 0.15); // card auth hover
+
+$transition-default: 0.3s ease;
+
+// espaçamentos combinados
+$padding-lg: 1.875rem 1.25rem; // 30px 20px
+$padding-md: 0.9375rem 1.25rem; // 15px 20px
+$padding-sm: 0.625rem 0.9375rem; // 10px 15px
+$padding-xl: 3.75rem 1.875rem; // 60px 30px
+
+// tamanhos padrões
+$note-size: 12.5rem; // ≈200px
+$icon-margin-factor: 0.4; // usado em .icon-container .icon
+$modal-shadow-offset: $padding-xl;
+// (no modal usamos 0 0 $padding-xl 0 rgba(0,0,0,.2))
+
+// se usar apenas um valor
+$padding-sm-single: 0.625rem; // 10px
+$padding-md-single: 0.9375rem; // 15px
+$padding-lg-single: 1.875rem; // 30px
+
+$margin-lg: $padding-lg;
+$margin-md: $padding-md;
+$margin-sm: $padding-sm;
+$margin-xl: $padding-xl;
+
+$break-md: 1000px;
+$break-sm: 600px;
+
+$radius: 0.625rem; // 10px
+$radius-sm: 0.25rem; // 4px
+$radius-md: 0.5rem; // 8px
+$radius-lg: 0.75rem; // 12px
+
+$font-size-sm: 0.875rem; // 14px
+$font-size-md: 1rem; // 16px
+$font-size-lg: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
+$font-size-xxl: 2rem; // 32px
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Sidebar variáveis
+$sidebar-width: 280px;
+$sidebar-closed-width: 60px;
+$sidebar-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
+
+// ----------------------------------------
+// 🌈 Mixins
+// ----------------------------------------
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flex-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flex-column-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flex-column-around {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+@mixin flex-column-center {
+  @include flex-column;
+}
+@mixin flex-column-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+@mixin flex-column-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+// Exemplo de mixin pra card-style (usado no notesadd.scss)
+@mixin card-style {
+  background: $color-white;
+  box-shadow: $box-shadow-light;
+  border-radius: $radius-md;
+}

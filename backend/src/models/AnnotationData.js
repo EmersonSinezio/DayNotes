@@ -13,10 +13,6 @@ const AnnotationDataSchema = new Schema(
       required: true,
       trim: true,
     },
-    priority: {
-      type: Boolean,
-      default: false,
-    },
     user: {
       type: String,
       ref: "User",

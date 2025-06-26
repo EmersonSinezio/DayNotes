@@ -80,7 +80,7 @@ const Notes = () => {
     closeEditModal();
   };
   return (
-    <div className="notes-container">
+    <>
       {/* Modal de Edição */}
       {showEditModal && (
         <div className="modal-overlay">
@@ -149,7 +149,7 @@ const Notes = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
