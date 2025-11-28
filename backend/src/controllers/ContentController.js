@@ -1,22 +1,30 @@
-const Annotations = require("../models/AnnotationData");
+const User = require("../models/User");
 
 module.exports = {
   async update(req, res) {
     try {
       const { id, userid } = req.params;
-      const updates = req.body;
+      const { title, notes } = req.body;
 
-      const annotation = await Annotations.findOneAndUpdate(
-        { _id: id, user: userid },
-        updates,
+      const user = await User.findOneAndUpdate(
+        { userid, "tasks._id": id },
+        {
+          $set: {
+            "tasks.$.title": title,
+            "tasks.$.notes": notes,
+          },
+        },
         { new: true }
       );
 
-      if (!annotation) {
+      if (!user) {
         return res.status(404).json({ error: "Anotação não encontrada" });
       }
 
-      return res.json(annotation);
+      // Find the updated task to return it
+      const updatedTask = user.tasks.id(id);
+
+      return res.json(updatedTask);
     } catch (error) {
       console.error("Erro detalhado:", error);
       return res.status(500).json({

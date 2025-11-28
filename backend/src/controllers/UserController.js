@@ -81,15 +81,4 @@ module.exports = {
       res.status(401).json({ message: "Token inválido" });
     }
   },
-  async getNotes(req, res) {
-    try {
-      const user = await User.findById(req.userId);
-      if (!user)
-        return res.status(404).json({ message: "Usuário nao encontrado" });
-      const notes = await Annotations.find({ user: user._id });
-      res.json(notes);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
 };

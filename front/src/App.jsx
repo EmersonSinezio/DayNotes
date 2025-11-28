@@ -1,79 +1,41 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import { Navigate } from "react-router-dom";
-import api from "./services/api";
-import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import AuthPage from "./pages/AuthPage";
+import Dashboard from "./pages/Dashboard";
 import Sidebar from "./components/Sidebar";
+import ProfileSettings from "./pages/ProfileSettings";
+
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-
-      if (token) {
-        try {
-          const userRes = await api.get("/users/me", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          setUser(userRes.data);
-        } catch (error) {
-          console.error("Erro na verificação de autenticação:", error);
-          localStorage.clear();
-        }
-      }
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, []);
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-  };
-
-  if (loading)
-    return (
-      <div>
-        <img src="/assets/load.svg" alt="loading" className="loading-icon" />
-      </div>
-    );
   return (
     <>
-      {/* <Header logout={logout} /> */}
-      <div className="App">
-        <Sidebar User={user} />
+      {!user && <Header />}
+      {user && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
+      <div
+        className={
+          user
+            ? `${
+                isSidebarOpen ? "md:ml-64" : "md:ml-20"
+              } transition-all duration-300`
+            : ""
+        }
+      >
         <Routes>
-          <Route
-            path="/login"
-            element={
-              user ? <Navigate to={`/user/${user.userid}/notes`} /> : <Login />
-            }
-          />
-          <Route
-            path="/user/:userid/notes"
-            element={
-              user ? (
-                <Homepage user={user} logout={logout} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/"
-            element={
-              <Navigate to={user ? `/user/${user.userid}/notes` : "/login"} />
-            }
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<AuthPage />} />
+          {user && <Route path="/user" element={<Dashboard />} />}
+          {user && <Route path="/user/:id/notes" element={<Dashboard />} />}
+          {user && (
+            <Route path="/user/:id/settings" element={<ProfileSettings />} />
+          )}
         </Routes>
+        {!user && <Footer />}
       </div>
     </>
   );

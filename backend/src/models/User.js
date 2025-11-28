@@ -25,6 +25,28 @@ const userSchema = new mongoose.Schema({
     unique: true,
     default: () => Math.random().toString(36).substr(2, 9),
   },
+  tasks: [
+    {
+      title: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      notes: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      priority: {
+        type: Boolean,
+        default: false,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 // Middleware pré-save aprimorado

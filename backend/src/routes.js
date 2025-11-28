@@ -3,7 +3,6 @@ const express = require("express");
 const routes = express.Router();
 const AnnotationController = require("./controllers/AnnotationController");
 const ContentController = require("./controllers/ContentController");
-const PriorityController = require("./controllers/PriorityController");
 const UserController = require("./controllers/UserController");
 const verifyUser = require("./middlewares/authMiddleware");
 
