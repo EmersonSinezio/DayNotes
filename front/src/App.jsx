@@ -15,7 +15,7 @@ import { useAuth } from "./contexts/AuthContext";
 
 const App = () => {
   const { user, loading } = useAuth();
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   if (loading) {
     return (

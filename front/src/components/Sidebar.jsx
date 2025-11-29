@@ -62,6 +62,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <aside
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
       className={`${
         isOpen ? "w-64" : "w-20"
       } bg-white h-screen flex flex-col justify-between border-r border-zinc-200 hidden md:flex fixed left-0 top-0 transition-all duration-300 z-40`}
