@@ -15,6 +15,19 @@ const userSchema = new mongoose.Schema({
     required: [true, "Senha é obrigatória"],
     minlength: [6, "Senha deve ter pelo menos 6 caracteres"],
   },
+  email: {
+    type: String,
+    required: [true, "Email é obrigatório"],
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate: {
+      validator: function (v) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+      },
+      message: (props) => `${props.value} não é um email válido!`,
+    },
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -40,6 +53,24 @@ const userSchema = new mongoose.Schema({
       priority: {
         type: Boolean,
         default: false,
+      },
+      status: {
+        type: String,
+        enum: ["active", "pending", "inProgress", "review", "done"],
+        default: "active",
+      },
+      category: {
+        type: String,
+        default: "General",
+      },
+      dueDate: {
+        type: Date,
+      },
+      progress: {
+        type: Number,
+        min: 0,
+        max: 100,
+        default: 0,
       },
       createdAt: {
         type: Date,

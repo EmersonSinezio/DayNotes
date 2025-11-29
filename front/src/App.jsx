@@ -1,17 +1,29 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
+import UserDashboard from "./pages/UserDashboard";
+import CalendarPage from "./pages/CalendarPage";
+import About from "./pages/About";
 import Sidebar from "./components/Sidebar";
 import ProfileSettings from "./pages/ProfileSettings";
 
+import { useAuth } from "./contexts/AuthContext";
+
 const App = () => {
-  const navigate = useNavigate();
-  const user = localStorage.getItem("user");
+  const { user, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>
@@ -27,13 +39,31 @@ const App = () => {
         }
       >
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<AuthPage />} />
-          {user && <Route path="/user" element={<Dashboard />} />}
-          {user && <Route path="/user/:id/notes" element={<Dashboard />} />}
-          {user && (
-            <Route path="/user/:id/settings" element={<ProfileSettings />} />
-          )}
+          <Route path="/" element={user ? <Navigate to="/user" /> : <Home />} />
+          <Route
+            path="/auth"
+            element={user ? <Navigate to="/user" /> : <AuthPage />}
+          />
+          <Route
+            path="/user"
+            element={user ? <UserDashboard /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/user/:id/notes"
+            element={user ? <Dashboard /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/user/:id/settings"
+            element={user ? <ProfileSettings /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/user/:id/calendar"
+            element={user ? <CalendarPage /> : <Navigate to="/auth" />}
+          />
+          <Route
+            path="/user/:id/about"
+            element={user ? <About /> : <Navigate to="/auth" />}
+          />
         </Routes>
         {!user && <Footer />}
       </div>

@@ -1,21 +1,25 @@
 const User = require("../models/User");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+
 module.exports = {
   async register(req, res) {
     try {
-      const { username, password } = req.body;
-      // Verificar se usuário já existe
+      const { username, password, email } = req.body;
+
+      // Check if user or email already exists
       const existingUser = await User.findOne({
-        $or: [{ username }],
+        $or: [{ username }, { email }],
       });
+
       if (existingUser) {
-        return res.status(400).json({ message: "Usuário já existe" });
+        return res.status(400).json({ message: "Usuário ou email já existe" });
       }
 
       const user = new User({
         username,
         password,
+        email,
         userid: crypto.randomBytes(8).toString("hex"),
         createdAt: Date.now(),
       });
@@ -25,11 +29,12 @@ module.exports = {
       res.status(500).json({ message: error.message });
     }
   },
+
   async login(req, res) {
     try {
       const { username, password } = req.body;
 
-      // Verificação de campos obrigatórios
+      // Validate required fields
       if (!username || !password) {
         return res
           .status(400)
@@ -42,29 +47,28 @@ module.exports = {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
-      // Usando o método do modelo para comparar senhas
+      // Compare passwords using model method
       const isMatch = await user.comparePassword(password);
 
       if (!isMatch) {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
-      // Verificar se o JWT_SECRET está definido
+      // Check if JWT_SECRET is defined
       if (!process.env.JWT_SECRET) {
         throw new Error("Variável de ambiente JWT_SECRET não configurada");
       }
 
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET, // Garantir que está definido no .env
-        { expiresIn: "1h" }
-      );
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
 
       res.json({ token });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   },
+
   async me(req, res) {
     try {
       const token = req.headers.authorization?.split(" ")[1];

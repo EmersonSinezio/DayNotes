@@ -1,158 +1,236 @@
 import React, { useState } from "react";
 import {
   FaUser,
-  FaEnvelope,
   FaPen,
-  FaWhatsapp, // Usando como ícone de telefone verde
+  FaWhatsapp,
   FaChevronDown,
+  FaEnvelope,
+  FaBriefcase,
+  FaCamera,
 } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi"; // Ícone parecido com o do email da imagem
+import { useAuth } from "../contexts/AuthContext";
+// Importando o Navbar para consistência
+import UserNavbar from "../components/UserNavbar";
+import UserAvatar from "../components/UserAvatar";
 
 const ProfileSettings = () => {
-  // Estado para os campos do formulário
-  const [formData, setFormData] = useState({
-    fullName: "Ayman Shaltoni",
-    email: "aymanshaltoni@gmail.com",
-    phone: "5502938123",
-    role: "Senior Product designer",
+  const { user } = useAuth();
+  const [formData] = useState({
+    fullName: user.username || "",
+    email: user.email || "",
+    phone: user.phone || "",
+    role: user.role || "Developer", // Exemplo default
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // Estilos de animação
+  const animationStyles = `
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-shimmer { background-size: 200% 200%; animation: shimmer 6s ease infinite; }
+  `;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans text-slate-800 flex justify-center items-start">
-      <div className="w-full max-w-2xl space-y-6">
-        {/* --- SEÇÃO 1: CARTÃO DE FOTO --- */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          {/* Banner Gradiente */}
-          <div className="h-32 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 relative">
-            <button className="absolute top-4 right-4 bg-white/90 p-2 rounded-full shadow-sm hover:bg-white transition text-slate-600">
-              <FaPen size={12} />
-            </button>
-          </div>
+    <div className="min-h-screen bg-[#F3F6FD] font-sans text-slate-700 relative overflow-hidden flex flex-col">
+      <style>{animationStyles}</style>
 
-          <div className="px-6 pb-6">
-            <div className="flex flex-col md:flex-row items-start md:items-end -mt-12 mb-4 gap-4">
-              {/* Foto de Perfil */}
-              <div className="relative">
-                <img
-                  src="https://i.pravatar.cc/300?img=11" // Imagem placeholder
-                  alt="Profile"
-                  className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-md"
-                />
-              </div>
+      {/* Background Blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-200/30 rounded-full blur-3xl animate-float" />
+      <div
+        className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-purple-200/30 rounded-full blur-3xl animate-float"
+        style={{ animationDelay: "2s" }}
+      />
+
+      <div className="flex-1 flex flex-col p-4 md:p-8 gap-8 z-10 overflow-y-auto custom-scrollbar">
+        {/* Navbar for navigation */}
+        <UserNavbar
+          title="Perfil"
+          secondaryTitle="Configurações"
+          onNewTask={() => {}} // No action
+        />
+
+        <div className="w-full max-w-4xl mx-auto space-y-8 pb-10">
+          {/* --- SECTION 1: PROFILE HEADER --- */}
+          <div className="bg-white/70 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-white/60 overflow-hidden animate-fade-in-up group">
+            {/* Animated Gradient Banner */}
+            <div className="h-40 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 relative animate-shimmer">
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+              <button className="absolute top-6 right-6 bg-white/30 backdrop-blur-md p-2.5 rounded-full text-white hover:bg-white hover:text-purple-600 transition-all shadow-sm border border-white/40">
+                <FaPen size={14} />
+              </button>
             </div>
 
-            <div className="mt-2">
-              <h2 className="text-xl font-bold text-slate-800">Your Photo</h2>
-              <p className="text-sm text-slate-500 mb-6">
-                This will be displayed on your profile
-              </p>
-
-              <div className="flex gap-3">
-                <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50 transition shadow-sm">
-                  Upload New
-                </button>
-                <button className="px-6 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700 transition shadow-sm shadow-blue-200">
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- SEÇÃO 2: INFORMAÇÕES PESSOAIS --- */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-          <h2 className="text-lg font-bold text-slate-800 mb-6">
-            Personal information
-          </h2>
-
-          <form className="space-y-5">
-            {/* Full Name */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaUser className="text-slate-800 text-lg" />
-                </div>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 font-medium transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Email Address */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Email address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLogOut className="text-slate-800 text-lg rotate-180" />{" "}
-                  {/* Simulando o ícone da imagem */}
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 font-medium transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Mobile Number */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Mobile number
-              </label>
-              <div className="flex relative items-center border border-slate-200 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all overflow-hidden">
-                {/* Prefixo / Ícone */}
-                <div className="flex items-center gap-2 pl-3 pr-2 py-3 border-r border-slate-100 bg-white">
-                  <div className="bg-green-500 rounded-full p-1 text-white">
-                    <FaWhatsapp size={10} />
+            <div className="px-8 pb-8">
+              <div className="flex flex-col md:flex-row items-start md:items-end -mt-16 mb-6 gap-6">
+                {/* Profile Photo with Camera Button */}
+                <div className="relative group/avatar">
+                  <div className="w-32 h-32 rounded-full border-[6px] border-white shadow-lg overflow-hidden relative bg-slate-200">
+                    <UserAvatar
+                      name={formData.fullName || "Usuário"}
+                      className="w-full h-full text-4xl group-hover/avatar:scale-110 transition-transform duration-500"
+                    />
+                    {/* Edit Overlay */}
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity cursor-pointer">
+                      <FaCamera className="text-white text-2xl" />
+                    </div>
                   </div>
-                  <span className="text-sm font-semibold text-slate-700">
-                    +966
-                  </span>
-                  <FaChevronDown className="text-slate-400 text-xs cursor-pointer hover:text-slate-600" />
+                  {/* Status Indicator */}
+                  <div className="absolute bottom-2 right-2 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
                 </div>
 
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="flex-1 px-4 py-3 bg-white border-none focus:outline-none text-slate-700 font-medium"
-                />
+                <div className="flex-1 mb-2">
+                  <h2 className="text-3xl font-bold text-slate-800">
+                    {formData.fullName || "Nome do Usuário"}
+                  </h2>
+                  <p className="text-slate-500 font-medium">{formData.role}</p>
+                </div>
+
+                <div className="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
+                  <button className="flex-1 md:flex-none px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                    Remover Foto
+                  </button>
+                  <button className="flex-1 md:flex-none px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl text-sm font-bold text-white hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all">
+                    Carregar Nova
+                  </button>
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* --- SECTION 2: FORM (DISABLED) --- */}
+          <div
+            className="bg-gray-100/50 backdrop-blur-sm rounded-[2.5rem] border border-gray-200 p-8 md:p-10 animate-fade-in-up opacity-75 pointer-events-none select-none grayscale-[0.5]"
+            style={{ animationDelay: "0.1s" }}
+          >
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-xl font-bold text-slate-600">
+                  Informações Pessoais
+                </h2>
+                <p className="text-sm text-slate-400 mt-1">
+                  Gerencie seus detalhes pessoais e informações de contato.
+                </p>
+              </div>
+              <button className="text-sm font-bold text-slate-400 flex items-center gap-2 cursor-not-allowed">
+                <span className="w-2 h-2 rounded-full bg-slate-400"></span>{" "}
+                Indisponível
+              </button>
             </div>
 
-            {/* Role */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Role
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 font-medium transition-all"
-                />
+            <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              {/* Full Name */}
+              <div className="group">
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">
+                  Nome Completo
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <FaUser className="text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    disabled
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-200/50 border border-transparent rounded-2xl text-slate-500 font-semibold placeholder-slate-400 cursor-not-allowed"
+                    placeholder="Digite seu nome"
+                  />
+                </div>
               </div>
-            </div>
-          </form>
+
+              {/* Email Address */}
+              <div className="group">
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">
+                  Endereço de Email
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <FaEnvelope className="text-slate-400" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    disabled
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-200/50 border border-transparent rounded-2xl text-slate-500 font-semibold placeholder-slate-400 cursor-not-allowed"
+                    placeholder="nome@exemplo.com"
+                  />
+                </div>
+              </div>
+
+              {/* Mobile Number */}
+              <div className="group md:col-span-1">
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">
+                  Número de Celular
+                </label>
+                <div className="flex relative items-center rounded-2xl bg-slate-200/50 border border-transparent cursor-not-allowed">
+                  {/* Prefix / Icon */}
+                  <div className="flex items-center gap-2 pl-4 pr-3 py-3.5 border-r border-slate-300/50">
+                    <div className="bg-slate-400 rounded-full p-1.5 text-white">
+                      <FaWhatsapp size={10} />
+                    </div>
+                    <span className="text-sm font-bold text-slate-500">
+                      +55
+                    </span>
+                    <FaChevronDown className="text-slate-400 text-[10px]" />
+                  </div>
+
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    disabled
+                    className="flex-1 px-4 py-3.5 bg-transparent border-none focus:outline-none text-slate-500 font-semibold placeholder-slate-400 w-full cursor-not-allowed"
+                    placeholder="11 91234 5678"
+                  />
+                </div>
+              </div>
+
+              {/* Role */}
+              <div className="group">
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">
+                  Cargo / Título
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <FaBriefcase className="text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="role"
+                    value={formData.role}
+                    disabled
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-200/50 border border-transparent rounded-2xl text-slate-500 font-semibold placeholder-slate-400 cursor-not-allowed"
+                    placeholder="ex: Desenvolvedor"
+                  />
+                </div>
+              </div>
+
+              {/* Save Button (Disabled) */}
+              <div className="md:col-span-2 flex justify-end mt-4 pt-6 border-t border-slate-200">
+                <button
+                  type="button"
+                  disabled
+                  className="px-8 py-3 bg-slate-300 text-slate-500 font-bold rounded-xl shadow-none cursor-not-allowed w-full md:w-auto"
+                >
+                  Salvar Alterações
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

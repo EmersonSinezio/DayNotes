@@ -1,24 +1,19 @@
-//  Todos os requires
+// Required modules
 const express = require("express");
 const routes = express.Router();
-const AnnotationController = require("./controllers/AnnotationController");
-const ContentController = require("./controllers/ContentController");
+const TaskController = require("./controllers/TaskController");
 const UserController = require("./controllers/UserController");
 const verifyUser = require("./middlewares/authMiddleware");
 
-console.log("rotas carregadas");
+console.log("Routes loaded");
 
-//Rota de anotações
-routes.get("/users/:userid/notes", verifyUser, AnnotationController.read);
-routes.post("/users/:userid/notes", verifyUser, AnnotationController.create);
-routes.delete(
-  "/users/:userid/notes/:id",
-  verifyUser,
-  AnnotationController.delete
-);
-routes.put("/users/:userid/contents/:id", verifyUser, ContentController.update);
+// Task Routes
+routes.get("/users/:userid/notes", verifyUser, TaskController.read);
+routes.post("/users/:userid/notes", verifyUser, TaskController.create);
+routes.delete("/users/:userid/notes/:id", verifyUser, TaskController.delete);
+routes.put("/users/:userid/contents/:id", verifyUser, TaskController.update);
 
-//  Rota user
+// User Routes
 routes.post("/users", UserController.register);
 routes.post("/users/login", UserController.login);
 routes.get("/users/me", UserController.me);

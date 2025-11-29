@@ -5,10 +5,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../services/api";
 
+import { useAuth } from "../contexts/AuthContext";
+
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Register State
   const [registerData, setRegisterData] = useState({
@@ -62,6 +65,7 @@ const AuthForm = () => {
       await api.post("/users", {
         username: registerData.username,
         password: registerData.password,
+        email: registerData.email,
       });
 
       toast.success("Cadastro realizado com sucesso! Faça login.");
@@ -77,22 +81,9 @@ const AuthForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const loginRes = await api.post("/users/login", {
-        username: loginData.username,
-        password: loginData.password,
-      });
-
-      localStorage.setItem("token", loginRes.data.token);
-
-      // Update API header with new token
-      api.defaults.headers.Authorization = `Bearer ${loginRes.data.token}`;
-
-      const userRes = await api.get("/users/me");
-      localStorage.setItem("user", JSON.stringify(userRes.data));
-
+      const user = await login(loginData.username, loginData.password);
       toast.success("Login realizado com sucesso!");
-      // Redirect to user notes page as per reference
-      window.location.href = `/user/${userRes.data.userid}/notes`;
+      navigate(`/user/${user.userid}/notes`);
     } catch (err) {
       console.error("Login error:", err);
       let errorMessage = "Erro ao fazer login";
@@ -129,7 +120,7 @@ const AuthForm = () => {
             className="bg-white flex flex-col items-center justify-center h-full px-12 text-center"
           >
             <h1 className="font-bold text-3xl m-0 text-zinc-800">
-              Create Account
+              Criar Conta
             </h1>
             <div className="my-5 flex">
               <SocialIcon Icon={FaFacebookF} />
@@ -137,11 +128,11 @@ const AuthForm = () => {
               <SocialIcon Icon={FaLinkedinIn} />
             </div>
             <span className="text-xs text-zinc-500 mb-4">
-              or use your email for registration
+              ou use seu email para registro
             </span>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Nome de Usuário"
               value={registerData.username}
               onChange={(e) =>
                 setRegisterData({ ...registerData, username: e.target.value })
@@ -160,7 +151,7 @@ const AuthForm = () => {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Senha"
               value={registerData.password}
               onChange={(e) =>
                 setRegisterData({ ...registerData, password: e.target.value })
@@ -172,7 +163,7 @@ const AuthForm = () => {
               disabled={loading}
               className="mt-4 rounded-[20px] border border-brand bg-brand text-white text-xs font-bold py-3 px-11 uppercase tracking-wider transition-transform active:scale-95 focus:outline-none hover:bg-brandDark hover:shadow-lg hover:shadow-brand/30 disabled:opacity-50"
             >
-              {loading ? "Loading..." : "Sign Up"}
+              {loading ? "Carregando..." : "Cadastrar"}
             </button>
           </form>
         </div>
@@ -186,18 +177,16 @@ const AuthForm = () => {
             onSubmit={handleLogin}
             className="bg-white flex flex-col items-center justify-center h-full px-12 text-center"
           >
-            <h1 className="font-bold text-3xl m-0 text-zinc-800">Sign in</h1>
+            <h1 className="font-bold text-3xl m-0 text-zinc-800">Entrar</h1>
             <div className="my-5 flex">
               <SocialIcon Icon={FaFacebookF} />
               <SocialIcon Icon={FaGooglePlusG} />
               <SocialIcon Icon={FaLinkedinIn} />
             </div>
-            <span className="text-xs text-zinc-500 mb-4">
-              or use your account
-            </span>
+            <span className="text-xs text-zinc-500 mb-4">ou use sua conta</span>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Nome de Usuário"
               value={loginData.username}
               onChange={(e) =>
                 setLoginData({ ...loginData, username: e.target.value })
@@ -207,7 +196,7 @@ const AuthForm = () => {
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Senha"
               value={loginData.password}
               onChange={(e) =>
                 setLoginData({ ...loginData, password: e.target.value })
@@ -219,13 +208,13 @@ const AuthForm = () => {
               type="button"
               className="text-zinc-600 text-sm no-underline my-4 hover:underline bg-transparent border-none cursor-pointer hover:text-brand"
             >
-              Forgot your password?
+              Esqueceu sua senha?
             </button>
             <button
               disabled={loading}
               className="rounded-[20px] border border-brand bg-brand text-white text-xs font-bold py-3 px-11 uppercase tracking-wider transition-transform active:scale-95 focus:outline-none hover:bg-brandDark hover:shadow-lg hover:shadow-brand/30 disabled:opacity-50"
             >
-              {loading ? "Loading..." : "Sign In"}
+              {loading ? "Carregando..." : "Entrar"}
             </button>
           </form>
         </div>
@@ -243,15 +232,18 @@ const AuthForm = () => {
               className={`absolute top-0 flex flex-col items-center justify-center h-full w-1/2 px-10 text-center transform transition-transform duration-700 ease-in-out 
                 ${isSignUp ? "translate-x-0" : "-translate-x-[20%]"}`}
             >
-              <h1 className="font-bold text-3xl m-0 mb-4">Welcome Back!</h1>
+              <h1 className="font-bold text-3xl m-0 mb-4">
+                Bem-vindo de volta!
+              </h1>
               <p className="text-sm font-light leading-5 tracking-wide mb-8">
-                To keep connected with us please login with your personal info
+                Para se manter conectado conosco, faça login com suas
+                informações pessoais
               </p>
               <button
                 onClick={() => setIsSignUp(false)}
                 className="bg-transparent border border-white text-white rounded-[20px] text-xs font-bold py-3 px-11 uppercase tracking-wider transition-transform active:scale-95 focus:outline-none"
               >
-                Sign In
+                Entrar
               </button>
             </div>
 
@@ -259,15 +251,15 @@ const AuthForm = () => {
               className={`absolute top-0 right-0 flex flex-col items-center justify-center h-full w-1/2 px-10 text-center transform transition-transform duration-700 ease-in-out 
                 ${isSignUp ? "translate-x-[20%]" : "translate-x-0"}`}
             >
-              <h1 className="font-bold text-3xl m-0 mb-4">Hello, Friend!</h1>
+              <h1 className="font-bold text-3xl m-0 mb-4">Olá, Amigo!</h1>
               <p className="text-sm font-light leading-5 tracking-wide mb-8">
-                Enter your personal details and start journey with us
+                Insira seus dados pessoais e comece sua jornada conosco
               </p>
               <button
                 onClick={() => setIsSignUp(true)}
                 className="bg-transparent border border-white text-white rounded-[20px] text-xs font-bold py-3 px-11 uppercase tracking-wider transition-transform active:scale-95 focus:outline-none"
               >
-                Sign Up
+                Cadastrar
               </button>
             </div>
           </div>
