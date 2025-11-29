@@ -1,16 +1,16 @@
-# DayNotes - Sistema de Anotações Seguras 📝🔒
+# DayNotes - Sistema de Anotações Seguras e Produtividade 📝🔒📅
 
 ![Demo](/front/public/readme/homepage.jpg)
 
-Aplicação fullstack para gerenciamento de anotações diárias com sistema de autenticação robusto e criptografia de dados. Cada usuário tem acesso exclusivo às suas notas com total privacidade e segurança.
+Aplicação fullstack para gerenciamento de anotações, tarefas e produtividade. Além de anotações seguras, o sistema oferece um Calendário interativo, Quadro Kanban para gestão de projetos e um Dashboard com estatísticas detalhadas.
 
 > ✨ **Novidades na versão atual:**
 >
-> - Sistema de autenticação reforçado com JWT
-> - Validação forte de senhas (8+ caracteres, maiúsculas, minúsculas, números e símbolos)
-> - Validação de nomes de usuário
-> - Criptografia de dados sensíveis
-> - Barra de força de senha em tempo real
+> - 📅 **Calendário Interativo:** Visualize e gerencie tarefas por data.
+> - 📋 **Quadro Kanban:** Organize projetos em colunas (A Fazer, Em Progresso, Concluído).
+> - 📊 **Dashboard Completo:** Estatísticas de produtividade e gráficos de atividades.
+> - 🎨 **Interface Moderna:** Design responsivo com Tailwind CSS.
+> - 🔐 **Segurança Reforçada:** Autenticação JWT e validação robusta.
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=for-the-badge&logo=vercel)](https://day-notes-client.vercel.app)
 
@@ -19,45 +19,38 @@ Aplicação fullstack para gerenciamento de anotações diárias com sistema de 
 ### Frontend
 
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react)](https://reactjs.org/)
-[![React Router](https://img.shields.io/badge/React_Router-6.15.0-CA4245?logo=react-router)](https://reactrouter.com/)
-[![React Toastify](https://img.shields.io/badge/React_Toastify-9.1.3-FF813F)](https://fkhadra.github.io/react-toastify/)
-[![Axios](https://img.shields.io/badge/Axios-1.4.0-5A29E4?logo=axios)](https://axios-http.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![React Router](https://img.shields.io/badge/React_Router-7.5.3-CA4245?logo=react-router)](https://reactrouter.com/)
+[![React Toastify](https://img.shields.io/badge/React_Toastify-11.0.5-FF813F)](https://fkhadra.github.io/react-toastify/)
+[![Axios](https://img.shields.io/badge/Axios-1.1.3-5A29E4?logo=axios)](https://axios-http.com/)
 
 ### Backend
 
-[![Node.js](https://img.shields.io/badge/Node.js-18.16.0-339933?logo=node.js)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?logo=node.js)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.18.2-000000?logo=express)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.1.0-47A248?logo=mongodb)](https://www.mongodb.com/)
-[![Mongoose](https://img.shields.io/badge/Mongoose-7.3.1-880000)](https://mongoosejs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?logo=mongodb)](https://www.mongodb.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-6.7.0-880000)](https://mongoosejs.com/)
 [![JWT](https://img.shields.io/badge/JWT-9.0.2-000000?logo=jsonwebtokens)](https://jwt.io/)
-[![Bcrypt](https://img.shields.io/badge/Bcrypt-5.1.1-3949AB)](https://www.npmjs.com/package/bcrypt)
-[![Crypto](https://img.shields.io/badge/Crypto-1.0.1-000000?logo=node.js)](https://nodejs.org/api/crypto.html)
 
 ## ✨ Funcionalidades Principais
 
-### Segurança e Autenticação
+### 📅 Produtividade e Organização
 
-- 🔑 Registro com validação forte de senha
-- 🔐 Login com tokens JWT e armazenamento seguro
-- 🛡️ Middleware de autenticação em todas as rotas protegidas
-- 🚫 Proteção contra ataques de força bruta
-- 🔄 Tokens JWT com expiração automática
+- **Calendário**: Visualização mensal com tarefas agendadas.
+- **Kanban Board**: Gestão visual de tarefas com drag-and-drop (arrastar e soltar).
+- **Dashboard**: Visão geral do progresso, tarefas pendentes e estatísticas.
 
-### Gerenciamento de Notas
+### 🔐 Segurança e Autenticação
 
-- ✏️ Criação de notas com prioridade
-- 📝 Edição em tempo real
-- 🗑️ Exclusão segura de notas
-- 🔍 Busca e organização de notas
-- 🏷️ Marcação de notas prioritárias
+- Registro com validação forte de senha.
+- Login com tokens JWT e armazenamento seguro.
+- Proteção contra ataques de força bruta.
 
-### Experiência do Usuário
+### 📝 Gerenciamento de Notas
 
-- 📱 Design responsivo
-- 📊 Barra de força de senha em tempo real
-- ✅ Feedback visual imediato para validações
-- ⏱️ Redirecionamento automático após ações
-- 💬 Notificações toast para interações
+- Criação, edição e exclusão de notas.
+- Categorização e priorização.
+- Busca e filtros avançados.
 
 ## 🔧 Instalação e Execução
 
@@ -67,98 +60,55 @@ Aplicação fullstack para gerenciamento de anotações diárias com sistema de 
 - MongoDB (local ou Atlas)
 - NPM 9.x+
 
-1. Clone o repositório:
+1. **Clone o repositório:**
 
 ```bash
 git clone https://github.com/EmersonSinezio/DayNotes.git
 cd DayNotes
 ```
 
-2. Configure backend:
+2. **Configure o Backend:**
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Edite o .env com suas configurações
+# Edite o .env com suas configurações (MongoDB URI, JWT Secret, etc.)
 ```
 
-3. Configure frontend
+3. **Configure o Frontend:**
 
 ```bash
-cd ../frontend
+cd front
 npm install
-cp .env.example .env
-# Configure REACT_APP_API_URL
+# O frontend espera que o backend esteja rodando na porta definida (padrão 3333)
 ```
 
-4. Inicie os serviços:
+4. **Inicie os serviços:**
 
 ```bash
-# Em um terminal:
-cd ../backend
+# Terminal 1 (Backend):
+cd backend
 npm run dev
 
-# Em outro terminal:
-cd ../frontend
-npm start
+# Terminal 2 (Frontend):
+cd front
+npm run dev
 ```
 
-4. Acesse a aplicação
+5. **Acesse a aplicação:**
 
 ```text
 http://localhost:3000
 ```
 
-## 🛡️ Sistema de Segurança
-
-### Validações
-
-- **Usuário:**
-  - 3-20 caracteres
-  - Apenas letras, números, `.` e `_`
-  - Único no sistema
-- **Senha:**
-  - Mínimo 8 caracteres
-  - 1 letra maiúscula
-  - 1 letra minúscula
-  - 1 número
-  - 1 caractere especial
-  - Validação em tempo real
-
-## 🌟 Melhorias Recentes
-
-1. **Sistema de Autenticação Reforçado:**
-
-   - Tokens JWT com expiração de 1h
-   - Middleware de verificação em todas as rotas protegidas
-   - Armazenamento seguro no cliente
-
-2. **Validações Avançadas:**
-
-   - Força de senha em tempo real com feedback visual
-   - Validação de formato de nome de usuário
-   - Verificação de unicidade no banco de dados
-
-3. **Segurança de Dados:**
-
-   - Criptografia de senhas com bcrypt
-   - Geração de IDs únicos com verificação anti-colisão
-   - Proteção contra injeção de dados
-
-4. **Experiência do Usuário:**
-
-   - Formulários interativos com validação instantânea
-   - Notificações toast para feedback de ações
-   - Interface intuitiva e responsiva
-
 ## 📬 Contato
 
-**Emerson Sinezio**  
+**Emerson Sinezio**
 [![Email](https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white)](mailto:emerson.sineziio@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/emerson-sineziio)
 [![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/emerson-sineziio)
 
 ---
 
-**Nota:** Este projeto está em constante evolução. Próximas atualizações incluirão recuperação de senha, autenticação de dois fatores e categorização de notas.
+**Nota:** Este projeto está em constante evolução.
